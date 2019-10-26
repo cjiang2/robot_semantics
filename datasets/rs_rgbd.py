@@ -7,6 +7,13 @@ from PIL import Image
 import torch
 from torch.utils import data
 
+# Root directory of the project
+ROOT_DIR = os.path.abspath("../")
+
+# Import v2c utils
+sys.path.append(ROOT_DIR)  # To find local version of the library
+import v2c.utils as utils
+
 # ----------------------------------------
 # Functions for RS-RGBD Database Integration
 # ----------------------------------------
@@ -29,7 +36,8 @@ def load_annotations(dataset_path=os.path.join('datasets', 'RS-RGBD'),
             start_frame, end_frame = int(start_frame), int(end_frame)
             caption = lines[i+1].strip().split(', ')
             #print(start_frame, end_frame, caption)
-            timestamps.append([start_frame, end_frame])
+            #timestamps.append([start_frame, end_frame])
+            timestamps.append(get_frames_no([start_frame, end_frame]))
             captions.append(caption)
         f.close()
         return caption_name, timestamps, captions
@@ -107,3 +115,81 @@ def summary(annotations):
     print('# righthand manipulator captions in total:', num_righthand)
     print('# manipulator captions in total:', num_lefthand + num_righthand)
     print('# static captions in total:', num_static)
+
+
+# ----------------------------------------
+# Functions for RS-RGBD Manual Feature Extraction
+# ----------------------------------------
+
+def generate_clips(dataset_path,
+                   settings,
+                   window_size,
+                   annotations_type=['lefthand', 'righthand']):
+    """Generate clips for training purposes through simulating video streamline queue.
+    """
+    def get_full_paths(frames_no,
+                       dataset_path,
+                       video_name):
+        frames_path = []
+        for frame_no in frames_no:
+            frames_path.append(os.path.join(dataset_path, video_name, video_name, '{}_rgb.png'.format(frame_no)))
+        return frames_path
+
+    all_clips, all_targets, all_names = [], [], []
+    for setting in settings:
+        # Get all timestamps and annotation captions 1st
+        annotations = load_annotations(dataset_path, setting)
+        videos = load_videos(dataset_path, setting)
+
+        # Generate clips
+        for video_name in annotations.keys():
+            annotations_by_video = annotations[video_name]
+            num_frames = len(videos[video_name])
+            #print(video_name, num_frames)
+
+            # Host a streamline queue
+            stream_queue = utils.StreamlineVideoQueue(window_size=window_size)
+
+            # Generate frame indices for all possible clips
+            clips = []
+            for i in range(num_frames):
+                stream_queue.update(i)
+                clip = stream_queue.retrieve_clip()
+                if clip is not None:
+                    clips.append(clip)
+
+            # Extract the main annotated manipulator captions, ignore the other manipulator with empty('none') annotations
+            main_annotations = []
+            for annotation_type in annotations_type:
+                if len(annotations_by_video[annotation_type][0]) > 1:
+                    timestamps, captions = annotations_by_video[annotation_type]
+                    for i in range(len(timestamps)):
+                        # Get the current segment
+                        timestamp, caption = timestamps[i], captions[i][0]
+                        #print('[{}, {}] {}'.format(timestamp[0], timestamp[-1], caption))
+                        main_annotations.append([timestamp, caption])
+
+            # Search for annotation, determined by the last frame_no of the clip
+            clips_path, targets, names = [], [], []
+            for i, clip in enumerate(clips):
+                end_frame_no = clip[-1]
+                for main_annotation in main_annotations:
+                    #print(main_annotation)
+                    if end_frame_no in main_annotation[0]:
+                        clips_path.append(get_full_paths(clip, dataset_path, video_name))
+                        targets.append(main_annotation[1])
+                        names.append('{}_{}'.format(video_name, i+1))
+                        break
+                    #print(targets)
+                    #exit()
+                # Perform an exhaustive iterative search over all timestamp
+            #print()
+            #for i in range(len(clips)):
+            #    print('{} [{}, {}] {}'.format(names[i], clips[i][0], clips[i][-1], targets[i]))
+            #print()
+
+            all_clips += clips_path
+            all_targets += targets
+            all_names += names
+        
+    return all_clips, all_targets, all_names

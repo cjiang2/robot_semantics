@@ -224,3 +224,60 @@ def pad_sequences(sequences, maxlen=None, dtype='int32',
         else:
             raise ValueError('Padding type "%s" not understood' % padding)
     return x
+
+
+# ------------------------------------------------------------
+# Functions for streamline video ops
+# ------------------------------------------------------------
+
+class StreamlineVideoQueue(object):
+    """Wrapper to hold images coming from a video feed.
+    """
+    def __init__(self,
+                 window_size,
+                 retrieval_limit=None):
+        # Maximum queue size
+        self.window_size = window_size
+
+        # A resonable retrieval limit should be half of the maximum queue size
+        self.retrieval_limit = int(np.floor(self.window_size / 2)) if retrieval_limit is None else retrieval_limit
+
+        # Number of maximum frames needed for retrieval should not exceed queue window size
+        assert self.retrieval_limit < self.window_size
+
+        # Main queue object and some numbers to keep track of
+        self.queue = []
+        self.num_frames = 0
+        self.num_queued = 0
+
+    def update(self, 
+               frame):
+        """Add new frame into the queue. Oldest frame is removed if exceeding.
+        """
+        self.queue.append(frame)
+        self.num_frames += 1
+
+        if len(self.queue) > self.window_size:  # Count number of pops when we first fill the queue
+            self.queue.pop(0)
+            self.num_queued += 1
+
+    def retrieve_clip(self, 
+                      forced_retrieve=False):
+        """Retrieve a single video clip unit.
+        """
+        # Force to retrieve a clip if necessary
+        if forced_retrieve:
+            return self.queue.copy()
+        # Cannot retrieve until filling the queue
+        if self.num_frames < self.window_size:
+            return None
+        # Allow retrieving after filling the queue first time, unless forced
+        else:
+            # Two situations for a legal retrieval
+            # 1: The first time queue is filled
+            # 2: Every time the number of incoming new frames gets to the maximum of frames needed(defined by retrieval_limit)
+            if self.num_queued % self.retrieval_limit == 0:
+                return self.queue.copy()
+
+    def __len__(self):
+        return len(self.queue)

@@ -50,13 +50,13 @@ class Config(object):
     # Size for Vocabulary
     VOCAB_SIZE = None
 
-    # Size for video observation window
-    WINDOW_SIZE = 30
-
     # --------------------
-    # Parameters for dataset, tf.dataset configuration
+    # Parameters for dataset configuration
     # Path to currently used dataset
     DATASET_PATH = os.path.join('datasets') # Override in sub-classes
+
+    # All settings to be used
+    SETTINGS = ['Grasp_Pour']
 
     # Maximum command sentence length
     MAXLEN = 10
@@ -77,6 +77,14 @@ class Config(object):
     START_WORD = '<sos>'
     END_WORD = '<eos>'
     UNK_WORD = None
+
+    # --------------------
+    # Parameters for video streamline configuration
+    # Size for video observation window
+    WINDOW_SIZE = 30
+
+    # Maximum number of frame needed to append to the queue for a clip retrieval
+    RETRIEVAL_LIMIT = 15
 
     def __init__(self):
         """Set values of computed attributes."""
