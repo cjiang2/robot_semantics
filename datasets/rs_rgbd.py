@@ -128,14 +128,15 @@ def generate_clips(dataset_path,
     """Generate clips for training purposes through simulating video streamline queue.
     """
     def get_full_paths(frames_no,
+                       folder,
                        dataset_path,
                        video_name):
         frames_path = []
         for frame_no in frames_no:
-            frames_path.append(os.path.join(dataset_path, video_name, video_name, '{}_rgb.png'.format(frame_no)))
+            frames_path.append(os.path.join(dataset_path, folder, video_name, video_name, '{}_rgb.png'.format(frame_no)))
         return frames_path
 
-    all_clips, all_targets = [], []
+    all_clips, all_captions = [], []
     # Get all timestamps and annotation captions 1st
     annotations = load_annotations(dataset_path, folder)
     videos = load_videos(dataset_path, folder)
@@ -144,7 +145,7 @@ def generate_clips(dataset_path,
     for video_name in annotations.keys():
         annotations_by_video = annotations[video_name]
         num_frames = len(videos[video_name])
-        #print(video_name, num_frames)
+        print(video_name, num_frames)
 
         # Host a streamline queue
         stream_queue = utils.StreamlineVideoQueue(window_size=window_size)
@@ -164,8 +165,8 @@ def generate_clips(dataset_path,
                 timestamps, captions = annotations_by_video[annotation_type]
                 for i in range(len(timestamps)):
                     # Get the current segment
-                    timestamp, caption = timestamps[i], captions[i][0]
-                    #print('[{}, {}] {}'.format(timestamp[0], timestamp[-1], caption))
+                    timestamp, caption = timestamps[i], captions[i][0]      # NOTE: Choose the first caption (Highest-level action)
+                    print('[{}, {}] {}'.format(timestamp[0], timestamp[-1], caption))
                     main_annotations.append([timestamp, caption])
 
         # Search for annotation, determined by the last frame_no of the clip
@@ -174,9 +175,54 @@ def generate_clips(dataset_path,
             for main_annotation in main_annotations:
                 #print(main_annotation)
                 if end_frame_no in main_annotation[0]:
-                    all_clips.append({'{}_{}'.format(video_name, i+1): get_full_paths(clip, dataset_path, video_name)})
-                    all_targets.append(main_annotation[1])
+                    all_clips.append({'{}_{}'.format(video_name, i+1): get_full_paths(clip, folder, dataset_path, video_name)})
+                    all_captions.append(main_annotation[1])
                     break
-        #print()
+        print()
         
-    return all_clips, all_targets
+    return all_clips, all_captions
+
+
+# ----------------------------------------
+# Functions for PyTorch Dataset object
+# ----------------------------------------
+
+class ClipDataset(data.Dataset):
+    """Create an instance of RS-RGBD dataset with (clips, captions)
+    """
+    def __init__(self, 
+                 clips,
+                 captions,
+                 transform=None):
+        self.clips, self.captions = clips, captions     # Load annotations
+        self.transform = transform
+
+    def parse_clip(self, 
+                   clip):
+        """Helper function to parse images {clip_name: imgs_path} into a clip. 
+        """
+        imgs = []
+        clip_name = list(clip.keys())[0]
+        imgs_path = clip[clip_name]
+        for img_path in imgs_path:
+            img = self._imread(img_path)
+            imgs.append(img)
+        return imgs, clip_name
+
+    def _imread(self, path):
+        """Helper function to read image.
+        """
+        with open(path, 'rb') as f:
+            img = Image.open(f)
+            img = img.convert('RGB')
+        if self.transform is not None:
+            img = self.transform(img)
+        return img
+
+    def __len__(self):
+        return len(self.clips)
+
+    def __getitem__(self, idx):
+        imgs, clip_name = self.parse_clip(self.clips[idx])
+        caption = self.captions[idx]
+        return imgs, caption, clip_name
