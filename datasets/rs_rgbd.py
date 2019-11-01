@@ -188,7 +188,7 @@ def generate_clips(dataset_path,
 # ----------------------------------------
 
 class ClipDataset(data.Dataset):
-    """Create an instance of RS-RGBD dataset with (clips, captions)
+    """Create an instance of RS-RGBD dataset with (clips, captions).
     """
     def __init__(self, 
                  clips,
@@ -207,7 +207,7 @@ class ClipDataset(data.Dataset):
         for img_path in imgs_path:
             img = self._imread(img_path)
             imgs.append(img)
-        return imgs, clip_name
+        return torch.stack(imgs, dim=0), clip_name
 
     def _imread(self, path):
         """Helper function to read image.
