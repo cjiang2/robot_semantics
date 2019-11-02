@@ -60,13 +60,15 @@ def extract(dataset_path,
             outputs = outputs.view(outputs.shape[0], -1)
 
             # Save into clips
-            outfile_path = os.path.join(output_path, clip_name+'_clip.npy')
-            np.save(outfile_path, outputs.cpu().numpy())
+            feature_fpath = os.path.join(output_path, clip_name+'_clip.npy')
+            np.save(feature_fpath, outputs.cpu().numpy())
             # Save caption
-            outfile_path = os.path.join(output_path, clip_name+'_caption.npy')
-            np.save(outfile_path, S)
+            caption_fpath = os.path.join(output_path, clip_name+'_caption.npy')
+            np.save(caption_fpath, S)
             print('{}: {}'.format(clip_name+'_clip.npy', S))
-            print('Shape: {}, saved to {}.'.format(outputs.shape, outfile_path))
+            print('Shape: {}\nFeature saved to {}\nCaption saved to {}.'.format(outputs.shape, 
+                                                                                feature_fpath,
+                                                                                caption_fpath))
     del model
     return
 
@@ -78,10 +80,6 @@ if __name__ == '__main__':
     folder = 'Grasp_Pour'
     clips, targets = rs_rgbd.generate_clips(config.DATASET_PATH, folder, config.WINDOW_SIZE)
     print('Number of clips:', len(clips), len(targets))
-    transform = transforms.Compose([transforms.Resize((224, 224)), 
-                                    transforms.ToTensor(),
-                                    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
-
-    clip_dataset = rs_rgbd.ClipDataset(clips, targets, transform=transform)
+    clip_dataset = rs_rgbd.Frames2ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
 
     extract(config.DATASET_PATH, clip_dataset, model_names[0])
