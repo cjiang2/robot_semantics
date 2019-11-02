@@ -56,7 +56,7 @@ class Config(object):
     DATASET_PATH = os.path.join('datasets') # Override in sub-classes
 
     # All settings to be used
-    SETTINGS = ['Grasp_Pour']
+    SETTINGS = {'train': ['Grasp_Pour']}
 
     # Maximum command sentence length
     MAXLEN = 10

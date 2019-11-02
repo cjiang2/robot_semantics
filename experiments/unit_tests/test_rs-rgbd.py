@@ -10,6 +10,7 @@ ROOT_DIR = os.path.abspath("../../")
 # Import v2c utils
 sys.path.append(ROOT_DIR)  # To find local version of the library
 import datasets.rs_rgbd as rs_rgbd
+from v2c.config import *
 
 # Test dataset reading
 dataset_path = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
@@ -56,4 +57,28 @@ for i, (imgs, caption, clip_name) in enumerate(frames2clip_dataset):
     plt.imshow(img0)
     plt.subplot(2,1,2)
     plt.imshow(img1)
-    plt.pause(0.0001)
+    #plt.pause(0.0001)
+    plt.show()
+    break
+
+class TrainConfig(Config):
+    """Configuration for training with RS-RGBD.
+    """
+    NAME = 'v2c_RS-RGBD'
+    MODE = 'train'
+    ROOT_DIR = ROOT_DIR
+    CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
+    DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
+    MAXLEN = 10
+
+config = TrainConfig()
+clips, targets, vocab, config = rs_rgbd.parse_clip_paths_and_captions(config)
+clip_dataset = rs_rgbd.ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
+print(vocab.word2idx)
+print(vocab.word_counts)
+
+print()
+# Test torch dataloader object
+for i, (Xv, S, clip_name) in enumerate(clip_dataset):
+    print(Xv.shape, S.shape, clip_name)
+    break

@@ -58,7 +58,7 @@ class Vocabulary(object):
         if freq is not None:
             self.word_counts[word] = freq
         else:
-            self.word_counts[word] = 0
+            self.word_counts[word] = 1
 
     def get_bias_vector(self):
         """Calculate bias vector from word frequency distribution.

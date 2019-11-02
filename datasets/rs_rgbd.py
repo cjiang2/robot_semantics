@@ -185,6 +185,38 @@ def generate_clips(dataset_path,
         
     return all_clips, all_captions
 
+def parse_clip_paths_and_captions(config,
+                                  vocab=None):
+    # Load paths to caption and clips
+    feature_path = os.path.join(config.DATASET_PATH, 
+                                list(config.BACKBONE.keys())[0], 
+                                config.SETTINGS['train'][0])
+    clips = glob.glob(os.path.join(feature_path, '*_clip.npy'))
+    captions = ['{} {} {}'.format(config.START_WORD, str(np.load(x.replace('_clip', '_caption'))), config.END_WORD) for x in clips]
+    print(clips)
+    print(captions)
+
+    # Build vocabulary
+    if vocab is None:
+        vocab = utils.build_vocab(captions, 
+                                  frequency=config.FREQUENCY,
+                                  start_word=config.START_WORD,
+                                  end_word=config.END_WORD,
+                                  unk_word=config.UNK_WORD)
+    # Reset vocab_size
+    config.VOCAB_SIZE = len(vocab)
+
+    print('Maximum length:', utils.get_maxlen(captions) )
+    if config.MAXLEN is None:
+        config.MAXLEN = utils.get_maxlen(captions) 
+            
+    # Process text tokens
+    targets = utils.texts_to_sequences(captions, vocab)
+    targets = utils.pad_sequences(targets, config.MAXLEN, padding='post')
+    targets = targets.astype(np.int64)
+
+    return clips, targets, vocab, config
+
 
 # ----------------------------------------
 # Functions for PyTorch Dataset object
@@ -256,6 +288,24 @@ class Frames2ClipDataset(data.Dataset):
         caption = self.captions[idx]
         return imgs, caption, clip_name
 
+class ClipDataset(data.Dataset):
+    """Create an instance of RS-RGBD dataset with pre-processed (clip_path, target).
+    """
+    def __init__(self, 
+                 clips,
+                 targets,
+                 transform=None):
+        self.clips, self.targets = clips, targets    # Load all (clip, target) pairs
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.clips)
+
+    def __getitem__(self, idx):
+        Xv = np.load(self.clips[idx])
+        clip_name = self.clips[idx].split('/')[-1]
+        S = self.targets[idx]
+        return Xv, S, clip_name
 
 # ----------------------------------------
 # Functions for PyTorch Transformers
