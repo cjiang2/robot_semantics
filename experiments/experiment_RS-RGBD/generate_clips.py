@@ -33,9 +33,10 @@ class FEConfig(Config):
 
 def extract(dataset_path,
             dataset,
-            model_name):
+            model_name,
+            folder):
     # Create output directory
-    output_path = os.path.join(dataset_path, model_name)
+    output_path = os.path.join(dataset_path, model_name, folder)
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
@@ -82,4 +83,4 @@ if __name__ == '__main__':
     print('Number of clips:', len(clips), len(targets))
     clip_dataset = rs_rgbd.Frames2ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
 
-    extract(config.DATASET_PATH, clip_dataset, model_names[0])
+    extract(config.DATASET_PATH, clip_dataset, model_names[0], folder)
