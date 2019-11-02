@@ -1,11 +1,14 @@
 import os
 import sys
 import glob
+import collections
 
+import cv2
 import numpy as np
 from PIL import Image
 import torch
 from torch.utils import data
+import torchvision.transforms as transforms
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../")
@@ -187,8 +190,34 @@ def generate_clips(dataset_path,
 # Functions for PyTorch Dataset object
 # ----------------------------------------
 
-class ClipDataset(data.Dataset):
-    """Create an instance of RS-RGBD dataset with (clips, captions).
+class FrameDataset(data.Dataset):
+    """Create an instance of RS-RGBD dataset with all the frames only.
+    """
+    def __init__(self, 
+                 frames,
+                 transform=None):
+        self.frames = frames    # Load all frame images
+        self.transform = transform
+
+    def _imread(self, path):
+        """Helper function to read image.
+        """
+        with open(path, 'rb') as f:
+            img = Image.open(f)
+            img = img.convert('RGB')
+        if self.transform:
+            img = self.transform(img)
+        return img
+
+    def __len__(self):
+        return len(self.frames)
+
+    def __getitem__(self, idx):
+        img = self._imread(self.frames[idx])
+        return img
+
+class Frames2ClipDataset(data.Dataset):
+    """Create an instance of RS-RGBD dataset with (frames, clip_names, captions).
     """
     def __init__(self, 
                  clips,
@@ -215,7 +244,7 @@ class ClipDataset(data.Dataset):
         with open(path, 'rb') as f:
             img = Image.open(f)
             img = img.convert('RGB')
-        if self.transform is not None:
+        if self.transform:
             img = self.transform(img)
         return img
 
@@ -226,3 +255,19 @@ class ClipDataset(data.Dataset):
         imgs, clip_name = self.parse_clip(self.clips[idx])
         caption = self.captions[idx]
         return imgs, caption, clip_name
+
+
+# ----------------------------------------
+# Functions for PyTorch Transformers
+# ----------------------------------------
+
+# Parameter settings, from PyTorch deafult
+TARGET_IMAGE_SIZE = (224, 224)
+CHANNEL_MEAN = [0.485, 0.456, 0.406]
+CHANNEL_STD = [0.229, 0.224, 0.225]
+
+# Transformers
+transforms_data = transforms.Compose([transforms.Resize(TARGET_IMAGE_SIZE),
+                                      transforms.ToTensor(),
+                                      transforms.Normalize(CHANNEL_MEAN, CHANNEL_STD),
+                                     ])

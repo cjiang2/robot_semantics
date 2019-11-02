@@ -41,17 +41,19 @@ for i in range(len(clips)):
 """
 
 # Test pytorch dataset object
-clip_dataset = rs_rgbd.ClipDataset(clips, targets)
+frames2clip_dataset = rs_rgbd.Frames2ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
 
 print()
 # Test torch dataloader object
-for i, (imgs, caption, clip_name) in enumerate(clip_dataset):
+for i, (imgs, caption, clip_name) in enumerate(frames2clip_dataset):
     print(clip_name)
     print(len(imgs))
     print(caption)
     print()
+    img0 = (imgs[0].cpu().numpy().transpose(1, 2, 0) * 255).astype(np.uint8)
+    img1 = (imgs[-1].cpu().numpy().transpose(1, 2, 0) * 255).astype(np.uint8)
     plt.subplot(2,1,1)
-    plt.imshow(np.asarray(imgs[0]))
+    plt.imshow(img0)
     plt.subplot(2,1,2)
-    plt.imshow(np.asarray(imgs[-1]))
-    plt.show()
+    plt.imshow(img1)
+    plt.pause(0.0001)
