@@ -17,7 +17,6 @@ BATCH_SIZE = 16
 
 # ----------------------------------------
 # UnitTest on video encoder
-# ----------------------------------------
 video_encoder = VideoEncoder(2048, 512)
 
 Xv = torch.ones((BATCH_SIZE, 30, 2048), dtype=torch.float32)
@@ -25,13 +24,11 @@ Xv, states = video_encoder(Xv)
 
 # ----------------------------------------
 # UnitTest on command decoder
-# ----------------------------------------
 command_decoder = CommandDecoder(units=512, vocab_size=150, embed_dim=512)
 S = torch.ones((BATCH_SIZE, MAXLEN), dtype=torch.long)
 
 # ----------------------------------------
 # Test encoding on video features
-# ----------------------------------------
 timestep = 4
 probs, states = command_decoder(S[:,timestep], states)
 target = S[:,timestep]
@@ -52,3 +49,16 @@ S_mask = (target != 0)
 print(target, target.shape)
 print(num_nonzeros)
 print(S_mask.shape)
+
+# ----------------------------------------
+# UnitTest on CNN feature extractor
+
+BACKBONE_NAME = 'resnet50'
+POOLING = None
+
+cnn_wrapper = CNNWrapper(BACKBONE_NAME, 
+                         os.path.join(ROOT_DIR, 'checkpoints', 'backbone', 'resnet50.pth'))
+img = torch.ones((1, 3, 224, 224))
+print(img.shape)
+out = cnn_wrapper(img)
+print(out.shape)

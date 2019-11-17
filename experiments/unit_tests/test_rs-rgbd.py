@@ -61,7 +61,7 @@ for i, (imgs, caption, clip_name) in enumerate(frames2clip_dataset):
     plt.show()
     break
 
-class TrainConfig(Config):
+class ConfigTest(Config):
     """Configuration for training with RS-RGBD.
     """
     NAME = 'v2c_RS-RGBD'
@@ -71,9 +71,9 @@ class TrainConfig(Config):
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
     MAXLEN = 10
 
-config = TrainConfig()
+config = ConfigTest()
 clips, targets, vocab, config = rs_rgbd.parse_clip_paths_and_captions(config)
-clip_dataset = rs_rgbd.ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
+clip_dataset = rs_rgbd.ClipDataset(clips, targets)
 print(vocab.word2idx)
 print(vocab.word_counts)
 

@@ -11,7 +11,8 @@ class Config(object):
     sub-class that inherits from this one and override properties
     that need to be changed.
     """
-    # Name the configurations.
+    # --------------------
+    # Basics of the configurations.
     NAME = None  # Override in sub-classes
     MODE = 'train'  # Mode (train/eval)
     ROOT_DIR = None     # Root project directory
@@ -60,9 +61,6 @@ class Config(object):
 
     # Maximum command sentence length
     MAXLEN = 10
-
-    # Buffer size for tf.dataset shuffling
-    BUFFER_SIZE = 1000
 
     # --------------------
     # Parameters for NLP parsing settings

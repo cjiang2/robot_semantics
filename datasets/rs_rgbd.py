@@ -1,9 +1,7 @@
 import os
 import sys
 import glob
-import collections
 
-import cv2
 import numpy as np
 from PIL import Image
 import torch
@@ -180,6 +178,7 @@ def generate_clips(dataset_path,
             for main_annotation in main_annotations:
                 #print(main_annotation)
                 if end_frame_no in main_annotation[0]:
+                    # Keep note of the frame_range where the clip belongs
                     all_clips.append({'{}_{}_{}'.format(video_name, frame_ranges[i][0], frame_ranges[i][1]): get_full_paths(clip, folder, dataset_path, video_name)})
                     all_captions.append(main_annotation[1])
                     break
@@ -189,6 +188,9 @@ def generate_clips(dataset_path,
 
 def parse_clip_paths_and_captions(config,
                                   vocab=None):
+    """Helper function to parse paths to clips, load and process captions and 
+    return (clip, target) pairs.
+    """
     # Load paths to caption and clips
     feature_path = os.path.join(config.DATASET_PATH, 
                                 list(config.BACKBONE.keys())[0], 
@@ -219,34 +221,19 @@ def parse_clip_paths_and_captions(config,
 
 
 # ----------------------------------------
-# Functions for PyTorch Dataset object
+# Functions for PyTorch Dataset object, transformers
 # ----------------------------------------
 
-class FrameDataset(data.Dataset):
-    """Create an instance of RS-RGBD dataset with all the frames only.
-    """
-    def __init__(self, 
-                 frames,
-                 transform=None):
-        self.frames = frames    # Load all frame images
-        self.transform = transform
+# Parameter settings, from PyTorch deafult
+TARGET_IMAGE_SIZE = (224, 224)
+CHANNEL_MEAN = [0.485, 0.456, 0.406]
+CHANNEL_STD = [0.229, 0.224, 0.225]
 
-    def _imread(self, path):
-        """Helper function to read image.
-        """
-        with open(path, 'rb') as f:
-            img = Image.open(f)
-            img = img.convert('RGB')
-        if self.transform:
-            img = self.transform(img)
-        return img
-
-    def __len__(self):
-        return len(self.frames)
-
-    def __getitem__(self, idx):
-        img = self._imread(self.frames[idx])
-        return img
+# Transformers
+transforms_data = transforms.Compose([transforms.Resize(TARGET_IMAGE_SIZE),
+                                      transforms.ToTensor(),
+                                      transforms.Normalize(CHANNEL_MEAN, CHANNEL_STD),
+                                     ])
 
 class Frames2ClipDataset(data.Dataset):
     """Create an instance of RS-RGBD dataset with (frames, clip_names, captions).
@@ -304,18 +291,3 @@ class ClipDataset(data.Dataset):
         clip_name = self.clips[idx].split('/')[-1]
         S = self.targets[idx]
         return Xv, S, clip_name
-
-# ----------------------------------------
-# Functions for PyTorch Transformers
-# ----------------------------------------
-
-# Parameter settings, from PyTorch deafult
-TARGET_IMAGE_SIZE = (224, 224)
-CHANNEL_MEAN = [0.485, 0.456, 0.406]
-CHANNEL_STD = [0.229, 0.224, 0.225]
-
-# Transformers
-transforms_data = transforms.Compose([transforms.Resize(TARGET_IMAGE_SIZE),
-                                      transforms.ToTensor(),
-                                      transforms.Normalize(CHANNEL_MEAN, CHANNEL_STD),
-                                     ])
