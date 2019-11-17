@@ -32,7 +32,7 @@ config = TrainConfig()
 # Setup tf.dataset object
 clips, targets, vocab, config = rs_rgbd.parse_clip_paths_and_captions(config)
 config.display()
-train_dataset = rs_rgbd.ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
+train_dataset = rs_rgbd.ClipDataset(clips, targets)
 train_loader = data.DataLoader(train_dataset, 
                                batch_size=config.BATCH_SIZE, 
                                shuffle=True, 

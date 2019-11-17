@@ -293,10 +293,8 @@ class ClipDataset(data.Dataset):
     """
     def __init__(self, 
                  clips,
-                 targets,
-                 transform=None):
+                 targets):
         self.clips, self.targets = clips, targets    # Load all (clip, target) pairs
-        self.transform = transform
 
     def __len__(self):
         return len(self.clips)
