@@ -16,6 +16,9 @@ sys.path.append(ROOT_DIR)  # To find local version of the library
 import datasets.rs_rgbd as rs_rgbd
 
 def calculate_mean_std(frame_dataset):
+    """Calculate per-channel mean over the entire dataset.
+    Should get similar values comapred to ImageNet mean and std.
+    """
     mean = 0.
     std = 0.
     for i, frame in enumerate(frame_dataset):

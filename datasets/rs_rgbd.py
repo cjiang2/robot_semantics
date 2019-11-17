@@ -235,6 +235,7 @@ transforms_data = transforms.Compose([transforms.Resize(TARGET_IMAGE_SIZE),
                                       transforms.Normalize(CHANNEL_MEAN, CHANNEL_STD),
                                      ])
 
+# (frames, target) pytorch dataset object
 class Frames2ClipDataset(data.Dataset):
     """Create an instance of RS-RGBD dataset with (frames, clip_names, captions).
     """
@@ -275,6 +276,7 @@ class Frames2ClipDataset(data.Dataset):
         caption = self.captions[idx]
         return imgs, caption, clip_name
 
+# (Clip, target) pytorch dataset object
 class ClipDataset(data.Dataset):
     """Create an instance of RS-RGBD dataset with pre-processed (clip_path, target).
     """
@@ -291,3 +293,30 @@ class ClipDataset(data.Dataset):
         clip_name = self.clips[idx].split('/')[-1]
         S = self.targets[idx]
         return Xv, S, clip_name
+
+# Frame-only pytorch dataset object
+class FrameDataset(data.Dataset):
+    """Create an instance of RS-RGBD dataset with all the frames only.
+    """
+    def __init__(self, 
+                 frames,
+                 transform=None):
+        self.frames = frames    # Load all frame images
+        self.transform = transform
+
+    def _imread(self, path):
+        """Helper function to read image.
+        """
+        with open(path, 'rb') as f:
+            img = Image.open(f)
+            img = img.convert('RGB')
+        if self.transform:
+            img = self.transform(img)
+        return img
+
+    def __len__(self):
+        return len(self.frames)
+
+    def __getitem__(self, idx):
+        img = self._imread(self.frames[idx])
+        return img
