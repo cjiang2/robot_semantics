@@ -31,6 +31,11 @@ class FEConfig(Config):
     WINDOW_SIZE = 30
     STEP = 15
 
+def override_caption(caption):
+    caption = caption.replace('lefthand', 'humanhand')
+    caption = caption.replace('righthand', 'humanhand')
+    return caption
+
 def extract(dataset_path,
             dataset,
             model_name,
@@ -52,13 +57,17 @@ def extract(dataset_path,
     # Feature extraction
     for i, (Xv, S, clip_name) in enumerate(dataset):
         with torch.no_grad():
-            Xv = Xv.to(device)
             print('-'*30)
             print('Processing clip {}...'.format(clip_name))
             #print(imgs_path, clip_name)
             #assert len(imgs_path) == 30
+            # Get features
+            Xv = Xv.to(device)
             outputs = model(Xv)
             outputs = outputs.view(outputs.shape[0], -1)
+
+            # Force replacing, replace righthand/lefthand -> humanhand
+            S = override_caption(S)
 
             # Save into clips
             feature_fpath = os.path.join(output_path, clip_name+'_clip.npy')
