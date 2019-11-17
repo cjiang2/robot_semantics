@@ -270,7 +270,7 @@ class Video2Command():
         """Run the evaluation pipeline over the test dataset.
         """
         assert self.config.MODE == 'test'
-        y_pred, y_true = [], []
+        y_pred, y_true, names = [], [], []
         # Evaluation over the entire test dataset
         for i, (Xv, S_true, clip_names) in enumerate(test_loader):
             # Mini-batch
@@ -278,9 +278,10 @@ class Video2Command():
             S_pred = self.predict(Xv, vocab)
             y_pred.append(S_pred)
             y_true.append(S_true)
+            names += clip_names
         y_pred = torch.cat(y_pred, dim=0)
         y_true = torch.cat(y_true, dim=0)
-        return y_pred.cpu().numpy(), y_true.cpu().numpy()
+        return y_pred.cpu().numpy(), y_true.cpu().numpy(), names
 
     def predict(self, 
                 Xv,
@@ -326,7 +327,7 @@ class Video2Command():
         """Load pre-trained weights by path.
         """
         print('Loading...')
-        checkpoint = torch.load(save_path)
+        checkpoint = torch.load(save_path, map_location=self.device)
         self.video_encoder.load_state_dict(checkpoint['VideoEncoder_state_dict'])
         self.command_decoder.load_state_dict(checkpoint['CommandDecoder_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])

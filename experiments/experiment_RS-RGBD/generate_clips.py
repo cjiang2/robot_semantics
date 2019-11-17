@@ -26,7 +26,6 @@ class FEConfig(Config):
     ROOT_DIR = ROOT_DIR
     CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
-    SETTINGS = ['Grasp_Pour']
     MAXLEN = 10
     WINDOW_SIZE = 30
     STEP = 15
@@ -87,7 +86,7 @@ if __name__ == '__main__':
     model_names = ['resnet50']
     config.display()
 
-    folder = 'Grasp_Pour'
+    folder = 'Evaluation'
     clips, targets = rs_rgbd.generate_clips(config.DATASET_PATH, folder, config.WINDOW_SIZE)
     print('Number of clips:', len(clips), len(targets))
     clip_dataset = rs_rgbd.Frames2ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
