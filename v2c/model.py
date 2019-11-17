@@ -270,7 +270,7 @@ class Video2Command():
         """Run the evaluation pipeline over the test dataset.
         """
         assert self.config.MODE == 'test'
-        y_pred, y_true, names = [], [], []
+        y_pred, y_true, fnames = [], [], []
         # Evaluation over the entire test dataset
         for i, (Xv, S_true, clip_names) in enumerate(test_loader):
             # Mini-batch
@@ -278,10 +278,10 @@ class Video2Command():
             S_pred = self.predict(Xv, vocab)
             y_pred.append(S_pred)
             y_true.append(S_true)
-            names += clip_names
+            fnames += clip_names
         y_pred = torch.cat(y_pred, dim=0)
         y_true = torch.cat(y_true, dim=0)
-        return y_pred.cpu().numpy(), y_true.cpu().numpy(), names
+        return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames
 
     def predict(self, 
                 Xv,
