@@ -192,9 +192,10 @@ def parse_clip_paths_and_captions(config,
     return (clip, target) pairs.
     """
     # Load paths to caption and clips
+    # TODO: Only accept one folder from the config.SETTINGS
     feature_path = os.path.join(config.DATASET_PATH, 
                                 list(config.BACKBONE.keys())[0], 
-                                config.SETTINGS[config.MODE][0])
+                                config.SETTINGS[0])
     clips = glob.glob(os.path.join(feature_path, '*_clip.npy'))
     captions = ['{} {} {}'.format(config.START_WORD, str(np.load(x.replace('_clip', '_caption'))), config.END_WORD) for x in clips]
 

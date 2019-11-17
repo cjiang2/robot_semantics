@@ -29,8 +29,13 @@ class FEConfig(Config):
     MAXLEN = 10
     WINDOW_SIZE = 30
     STEP = 15
+    BACKBONE = {'resnet50': 2048}
+    SETTINGS = ['Evaluation']
 
 def override_caption(caption):
+    """NOTE: NOT DESIRABLE.
+    Manually override some specific annotation tokens.
+    """
     caption = caption.replace('lefthand', 'humanhand')
     caption = caption.replace('righthand', 'humanhand')
     return caption
@@ -39,6 +44,9 @@ def extract(dataset_path,
             dataset,
             model_name,
             folder):
+    """Wrapper function to extract CNN features and save both features
+    and captions as single numpy files.
+    """
     # Create output directory
     output_path = os.path.join(dataset_path, model_name, folder)
     if not os.path.exists(output_path):
@@ -71,9 +79,11 @@ def extract(dataset_path,
             # Save into clips
             feature_fpath = os.path.join(output_path, clip_name+'_clip.npy')
             np.save(feature_fpath, outputs.cpu().numpy())
+
             # Save caption
             caption_fpath = os.path.join(output_path, clip_name+'_caption.npy')
             np.save(caption_fpath, S)
+            
             print('{}: {}'.format(clip_name+'_clip.npy', S))
             print('Shape: {}\nFeature saved to {}\nCaption saved to {}.'.format(outputs.shape, 
                                                                                 feature_fpath,
@@ -83,12 +93,10 @@ def extract(dataset_path,
 
 if __name__ == '__main__':
     config = FEConfig()
-    model_names = ['resnet50']
     config.display()
 
-    folder = 'Evaluation'
-    clips, targets = rs_rgbd.generate_clips(config.DATASET_PATH, folder, config.WINDOW_SIZE)
+    clips, targets = rs_rgbd.generate_clips(config.DATASET_PATH, config.SETTINGS[0], config.WINDOW_SIZE)
     print('Number of clips:', len(clips), len(targets))
     clip_dataset = rs_rgbd.Frames2ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
 
-    extract(config.DATASET_PATH, clip_dataset, model_names[0], folder)
+    extract(config.DATASET_PATH, clip_dataset, list(config.BACKBONE.keys())[0], config.SETTINGS[0])
