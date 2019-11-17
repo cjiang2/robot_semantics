@@ -193,8 +193,6 @@ def parse_clip_paths_and_captions(config,
                                 config.SETTINGS['train'][0])
     clips = glob.glob(os.path.join(feature_path, '*_clip.npy'))
     captions = ['{} {} {}'.format(config.START_WORD, str(np.load(x.replace('_clip', '_caption'))), config.END_WORD) for x in clips]
-    print(clips)
-    print(captions)
 
     # Build vocabulary
     if vocab is None:
