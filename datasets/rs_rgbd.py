@@ -155,11 +155,13 @@ def generate_clips(dataset_path,
 
         # Generate frame indices for all possible clips
         clips = []
+        frame_ranges = []
         for i in range(num_frames):
             stream_queue.update(i)
             clip = stream_queue.retrieve_clip()
             if clip is not None:
                 clips.append(clip)
+                frame_ranges.append((i - window_size + 1, i))
 
         # Extract the main annotated manipulator captions, ignore the other manipulator with empty('none') annotations
         main_annotations = []
@@ -178,7 +180,7 @@ def generate_clips(dataset_path,
             for main_annotation in main_annotations:
                 #print(main_annotation)
                 if end_frame_no in main_annotation[0]:
-                    all_clips.append({'{}_{}'.format(video_name, i+1): get_full_paths(clip, folder, dataset_path, video_name)})
+                    all_clips.append({'{}_{}_{}'.format(video_name, frame_ranges[i][0], frame_ranges[i][1]): get_full_paths(clip, folder, dataset_path, video_name)})
                     all_captions.append(main_annotation[1])
                     break
         print()
