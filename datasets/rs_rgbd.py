@@ -29,7 +29,7 @@ def load_annotations(dataset_path=os.path.join('datasets', 'RS-RGBD'),
         """
         timestamps = []
         captions = []
-        caption_name = path.split('/')[-1][:-4]
+        caption_name = path.split(os.sep)[-1][:-4]
         f = open(path, 'r')
         lines = f.readlines()
         for i in range(0, len(lines), 3):
@@ -196,7 +196,7 @@ def parse_clip_paths_and_captions(config,
     feature_path = os.path.join(config.DATASET_PATH, 
                                 list(config.BACKBONE.keys())[0], 
                                 config.SETTINGS[0])
-    clips = glob.glob(os.path.join(feature_path, '*_clip.npy'))
+    clips = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
     captions = ['{} {} {}'.format(config.START_WORD, str(np.load(x.replace('_clip', '_caption'))), config.END_WORD) for x in clips]
 
     # Build vocabulary
@@ -291,7 +291,7 @@ class ClipDataset(data.Dataset):
 
     def __getitem__(self, idx):
         Xv = np.load(self.clips[idx])
-        clip_name = self.clips[idx].split('/')[-1]
+        clip_name = self.clips[idx].split(os.sep)[-1]
         S = self.targets[idx]
         return Xv, S, clip_name
 
