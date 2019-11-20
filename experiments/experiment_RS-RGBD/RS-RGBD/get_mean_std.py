@@ -9,7 +9,7 @@ from torch.utils import data
 import torchvision.transforms as transforms
 
 # Root directory of the project
-ROOT_DIR = os.path.abspath("../../")
+ROOT_DIR = os.path.abspath("../../../")
 
 # Import v2c utils
 sys.path.append(ROOT_DIR)  # To find local version of the library
