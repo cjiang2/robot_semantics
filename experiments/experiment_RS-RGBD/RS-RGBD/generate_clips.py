@@ -32,14 +32,6 @@ class FEConfig(Config):
     BACKBONE = {'resnet50': 2048}
     SETTINGS = ['Evaluation']
 
-def override_caption(caption):
-    """NOTE: NOT DESIRABLE.
-    Manually override some specific annotation tokens.
-    """
-    caption = caption.replace('lefthand', 'humanhand')
-    caption = caption.replace('righthand', 'humanhand')
-    return caption
-
 def extract(dataset_path,
             dataset,
             model_name,
@@ -72,9 +64,6 @@ def extract(dataset_path,
             Xv = Xv.to(device)
             outputs = model(Xv)
             outputs = outputs.view(outputs.shape[0], -1)
-
-            # Force replacing, replace righthand/lefthand -> humanhand
-            S = override_caption(S)
 
             # Save into clips
             feature_fpath = os.path.join(output_path, clip_name+'_clip.npy')

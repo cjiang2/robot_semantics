@@ -186,18 +186,22 @@ def generate_clips(dataset_path,
         
     return all_clips, all_captions
 
-def parse_clip_paths_and_captions(config,
-                                  vocab=None):
-    """Helper function to parse paths to clips, load and process captions and 
-    return (clip, target) pairs.
+def override_caption(caption):
+    """NOTE: NOT DESIRABLE.
+    Manually override some specific annotation tokens.
     """
-    # Load paths to caption and clips
-    # TODO: Only accept one folder from the config.SETTINGS
-    feature_path = os.path.join(config.DATASET_PATH, 
-                                list(config.BACKBONE.keys())[0], 
-                                config.SETTINGS[0])
-    clips = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
-    captions = ['{} {} {}'.format(config.START_WORD, str(np.load(x.replace('_clip', '_caption'))), config.END_WORD) for x in clips]
+    caption = caption.replace('lefthand', 'humanhand')
+    caption = caption.replace('righthand', 'humanhand')
+    caption = caption.replace('_', ' ')
+    return caption
+
+def process_caption(captions,
+                    config,
+                    vocab=None):
+    """Helper function to process captions into sequences.
+    """
+    # Add start and end tokens
+    captions = ['{} {} {}'.format(config.START_WORD, override_caption(caption), config.END_WORD) for caption in captions]
 
     # Build vocabulary
     if vocab is None:
@@ -209,15 +213,36 @@ def parse_clip_paths_and_captions(config,
     # Reset vocab_size
     config.VOCAB_SIZE = len(vocab)
 
-    print('Maximum length:', utils.get_maxlen(captions) )
-    if config.MAXLEN is None:
-        config.MAXLEN = utils.get_maxlen(captions) 
+    maxlen = utils.get_maxlen(captions)
+    #print('Maximum length:', maxlen)
+    if (config.MAXLEN is None) or (config.MAXLEN < maxlen):
+        config.MAXLEN = maxlen
+    #print('Current Maximum length settings:', config.MAXLEN)
             
     # Process text tokens
     targets = utils.texts_to_sequences(captions, vocab)
     targets = utils.pad_sequences(targets, config.MAXLEN, padding='post')
     targets = targets.astype(np.int64)
 
+    return targets, vocab, config
+
+def parse_clip_paths_and_captions(config,
+                                  vocab=None):
+    """Helper function to parse paths to clips, load and process captions and 
+    return (clip, target) pairs.
+    """
+    # Load paths to caption and clips
+    # TODO: Only accept one folder from the config.SETTINGS
+    feature_path = os.path.join(config.DATASET_PATH, 
+                                list(config.BACKBONE.keys())[0], 
+                                config.SETTINGS[0])
+    clips = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
+    captions = ['{}'.format(str(np.load(x.replace('_clip', '_caption')))) for x in clips]
+
+    # Sentences to Sequences
+    targets, vocab, config = process_caption(captions, 
+                                             config=config, 
+                                             vocab=vocab)
     return clips, targets, vocab, config
 
 

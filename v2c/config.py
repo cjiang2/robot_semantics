@@ -60,7 +60,7 @@ class Config(object):
     SETTINGS = ['Grasp_Pour']
 
     # Maximum command sentence length
-    MAXLEN = 10
+    MAXLEN = 15
 
     # --------------------
     # Parameters for NLP parsing settings

@@ -25,7 +25,6 @@ class InferenceConfig(Config):
     ROOT_DIR = ROOT_DIR
     CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
-    MAXLEN = 10
     SETTINGS = ['Evaluation']
 
 def init_model(config, 
