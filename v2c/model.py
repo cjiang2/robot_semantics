@@ -113,14 +113,15 @@ class CommandDecoder(nn.Module):
         self.embed_dim = embed_dim
 
         self.embed = nn.Embedding(vocab_size, embed_dim)
-        self.lstm_cell = nn.LSTMCell(embed_dim, units)
+        self.lstm_cell = nn.LSTMCell(embed_dim + units, units)
         self.logits = nn.Linear(units, vocab_size, bias=True)
         self.softmax = nn.LogSoftmax(dim=1)
         self.reset_parameters(bias_vector)
 
     def forward(self, 
                 Xs, 
-                states):
+                states, 
+                Xv):
         # Phase 2: Decoding Stage
         # Given the previous word token, generate next caption word using lstm2
         # Sequence processing and generating
@@ -128,8 +129,12 @@ class CommandDecoder(nn.Module):
         #print('Xs:', Xs.shape)
         Xs = self.embed(Xs)
         #print('embed:', Xs.shape)
+        #print('Xv:', Xv.shape)
+        x = torch.cat((Xv, Xs), dim=-1)
+        #print(x.shape)
+        #exit()
 
-        hi, ci = self.lstm_cell(Xs, states)
+        hi, ci = self.lstm_cell(x, states)
         #print('out:', hi.shape, 'hi:', states[0].shape, 'ci:', states[1].shape)
 
         x = self.logits(hi)
@@ -232,7 +237,7 @@ class Video2Command():
             # Teacher-Forcing for command decoder
             for timestep in range(self.config.MAXLEN - 1):
                 Xs = S[:,timestep]
-                probs, states = self.command_decoder(Xs, states)
+                probs, states = self.command_decoder(Xs, states, Xv)
                 # Calculate loss per word
                 loss += self.loss_objective(probs, S[:,timestep+1])
             loss = loss / S_mask.sum()     # Loss per word
