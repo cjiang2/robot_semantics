@@ -309,7 +309,7 @@ class Video2Command():
             #_, states = self.command_decoder(None, states, Xv=Xv)   # Encode video features 1st
             for timestep in range(self.config.MAXLEN - 1):
                 Xs = S[:,timestep]
-                probs, states = self.command_decoder(Xs, states)
+                probs, states = self.command_decoder(Xs, states, Xv)
                 preds = torch.argmax(probs, dim=1)    # Collect prediction
                 S[:,timestep+1] = preds
         return S
