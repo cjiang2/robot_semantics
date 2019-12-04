@@ -55,7 +55,7 @@ class Config(object):
     # gt target vs. using pred target during training
     # This will slow down the convergence rate but force exploration 
     # against exploitation.
-    TEACHER_FORCING_RATIO = 0.5 
+    TEACHER_FORCING_RATIO = 1.0 
 
     # --------------------
     # Parameters for dataset configuration
