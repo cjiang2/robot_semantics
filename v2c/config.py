@@ -51,6 +51,12 @@ class Config(object):
     # Size for Vocabulary
     VOCAB_SIZE = None
 
+    # Teacher-forcing Ratio, Randomly choose between using 
+    # gt target vs. using pred target during training
+    # This will slow down the convergence rate but force exploration 
+    # against exploitation.
+    TEACHER_FORCING_RATIO = 0.5 
+
     # --------------------
     # Parameters for dataset configuration
     # Path to currently used dataset

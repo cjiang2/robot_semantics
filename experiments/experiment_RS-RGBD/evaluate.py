@@ -28,10 +28,11 @@ class InferenceConfig(Config):
     SETTINGS = ['Evaluation']
 
 def init_model(config, 
+               vocab,
                CHECKPOINT_FILE):
     # --------------------
     # Setup and build video2command training inference
-    v2c_model = Video2Command(config)
+    v2c_model = Video2Command(config, vocab)
     v2c_model.build(None)
     # Safely create prediction dir if non-exist
     if not os.path.exists(os.path.join(config.CHECKPOINT_PATH, 'prediction')):
@@ -68,7 +69,7 @@ def main():
         CHECKPOINT_FILE = os.path.join(config.CHECKPOINT_PATH, 'saved', 'v2c_epoch_{}.pth'.format(idx))
         if os.path.exists(CHECKPOINT_FILE):
             print('Loading saved model {}...'.format(CHECKPOINT_FILE))
-            v2c_model = init_model(config, CHECKPOINT_FILE)
+            v2c_model = init_model(config, vocab, CHECKPOINT_FILE)
 
             # Evaluate
             y_pred, y_true, fnames = v2c_model.evaluate(test_loader, vocab)

@@ -1,4 +1,5 @@
 import os
+import random
 
 import numpy as np
 import torch
@@ -185,9 +186,11 @@ class Video2Command():
     """Train/Eval inference class for V2C model.
     """
     def __init__(self,
-                 config):
+                 config,
+                 vocab):
         self.config = config
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+        self.vocab = vocab
     
     def build(self,
               bias_vector=None):
@@ -234,14 +237,23 @@ class Video2Command():
             # Calculate mask against zero-padding
             S_mask = S != 0
 
-            # Teacher-Forcing for command decoder
+            # Whether to use Teacher-Forcing or explore
+            use_teacher_forcing = True if random.random() < self.config.TEACHER_FORCING_RATIO else False
+
+            # Decoding loop
+            Xs = S[:,0]     # First word is always START_WORD
             for timestep in range(self.config.MAXLEN - 1):
-                Xs = S[:,timestep]
                 probs, states = self.command_decoder(Xs, states, Xv)
                 # Calculate loss per word
                 loss += self.loss_objective(probs, S[:,timestep+1])
-            loss = loss / S_mask.sum()     # Loss per word
+                # Teacher-Forcing for command decoder
+                if use_teacher_forcing:
+                    Xs = S[:,timestep+1]
+                # Explore using next prediction
+                else:
+                    Xs = torch.argmax(probs, dim=1).detach()
 
+            loss = loss / S_mask.sum()     # Average loss per word
             # Gradient backward
             loss.backward()
             self.optimizer.step()
@@ -270,8 +282,7 @@ class Video2Command():
         return
 
     def evaluate(self,
-                 test_loader,
-                 vocab):
+                 test_loader):
         """Run the evaluation pipeline over the test dataset.
         """
         assert self.config.MODE == 'test'
@@ -280,7 +291,7 @@ class Video2Command():
         for i, (Xv, S_true, clip_names) in enumerate(test_loader):
             # Mini-batch
             Xv, S_true = Xv.to(self.device), S_true.to(self.device)
-            S_pred = self.predict(Xv, vocab)
+            S_pred = self.predict(Xv, self.vocab)
             y_pred.append(S_pred)
             y_true.append(S_true)
             fnames += clip_names
@@ -289,8 +300,7 @@ class Video2Command():
         return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames
 
     def predict(self, 
-                Xv,
-                vocab):
+                Xv):
         """Run the prediction pipeline given one sample.
         """
         self.video_encoder.eval()
@@ -299,7 +309,7 @@ class Video2Command():
         with torch.no_grad():
             # Initialize S with '<sos>'
             S = torch.zeros((Xv.shape[0], self.config.MAXLEN), dtype=torch.long)
-            S[:,0] = vocab('<sos>')
+            S[:,0] = self.vocab('<sos>')
             S = S.to(self.device)
 
             # Start v2c prediction pipeline

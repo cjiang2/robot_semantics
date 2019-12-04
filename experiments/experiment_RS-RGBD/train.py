@@ -39,7 +39,7 @@ train_loader = data.DataLoader(train_dataset,
 bias_vector = vocab.get_bias_vector() if config.USE_BIAS_VECTOR else None
 
 # Setup and build video2command training inference
-v2c_model = Video2Command(config)
+v2c_model = Video2Command(config, vocab)
 v2c_model.build(bias_vector)
 
 # Save vocabulary at last
