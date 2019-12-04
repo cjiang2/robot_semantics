@@ -291,7 +291,7 @@ class Video2Command():
         for i, (Xv, S_true, clip_names) in enumerate(test_loader):
             # Mini-batch
             Xv, S_true = Xv.to(self.device), S_true.to(self.device)
-            S_pred = self.predict(Xv, self.vocab)
+            S_pred = self.predict(Xv)
             y_pred.append(S_pred)
             y_true.append(S_true)
             fnames += clip_names
