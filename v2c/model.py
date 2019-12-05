@@ -62,55 +62,6 @@ class CNNWrapper(nn.Module):
 # Functions for V2CNet
 # ----------------------------------------
 
-class VideoEncoder(nn.Module):
-    """Module to encode pre-extracted features coming from 
-    pre-trained CNN.
-    """
-    def __init__(self,
-                 in_size,
-                 units):
-        super(VideoEncoder, self).__init__()
-        self.units = units
-        self.linear = nn.Linear(in_size, units)
-        self.lstm_cell = nn.LSTMCell(units, units)
-        self.reset_parameters()
-
-    def forward(self, 
-                Xv):
-        # Phase 1: Encoding Stage
-        # Encode video features with one dense layer and lstm
-        # State of this lstm to be used for lstm2 language generator
-        Xv = self.linear(Xv)
-        #print('linear:', Xv.shape)
-        Xv = F.relu(Xv)
-
-        # Encode video feature using attention and LSTM
-        (hi, ci) = self.init_hidden(Xv.shape[0], Xv.device)
-        for timestep in range(Xv.shape[1]):
-            hi, ci = self.lstm_cell(Xv[:,timestep,:], (hi, ci))
-        #print('lstm', 'hi:', hi.shape, 'ci:', ci.shape)
-        return hi, (hi, ci)
-
-    def reset_parameters(self):
-        for n, p in self.named_parameters():
-            if 'weight' in n:
-                if 'hh' in n:
-                    nn.init.orthogonal_(p.data)
-                else:
-                    nn.init.xavier_uniform_(p.data)
-            else:
-                nn.init.zeros_(p.data)
-
-    def init_hidden(self, 
-                    batch_size,
-                    device):
-        """Initialize a zero state for LSTM.
-        """
-        h0 = torch.zeros(batch_size, self.units, device=device)
-        c0 = torch.zeros(batch_size, self.units, device=device)
-        return (h0, c0)
-
-
 class BahdanauAttention(nn.Module):
     """Minimal implementation of Bahdanau Attention.
     """
@@ -143,6 +94,55 @@ class BahdanauAttention(nn.Module):
                 nn.init.xavier_uniform_(p.data)
             else:
                 nn.init.zeros_(p.data)
+
+
+class VideoEncoder(nn.Module):
+    """Module to encode pre-extracted features coming from 
+    pre-trained CNN.
+    """
+    def __init__(self,
+                 in_size,
+                 units):
+        super(VideoEncoder, self).__init__()
+        self.units = units
+        self.linear = nn.Linear(in_size, units)
+        self.lstm_cell = nn.LSTMCell(units, units)
+        self.reset_parameters()
+
+    def forward(self, 
+                Xv):
+        # Phase 1: Encoding Stage
+        # Encode video features with one dense layer and lstm
+        # State of this lstm to be used for lstm2 language generator
+        Xv = self.linear(Xv)
+        #print('linear:', Xv.shape)
+        Xv = F.relu(Xv)
+
+        # Encode video feature using LSTM
+        (hi, ci) = self.init_hidden(Xv.shape[0], Xv.device)
+        for timestep in range(Xv.shape[1]):
+            hi, ci = self.lstm_cell(Xv[:,timestep,:], (hi, ci))
+        #print('lstm', 'hi:', hi.shape, 'ci:', ci.shape)
+        return hi, (hi, ci)
+
+    def reset_parameters(self):
+        for n, p in self.named_parameters():
+            if 'weight' in n:
+                if 'hh' in n:
+                    nn.init.orthogonal_(p.data)
+                else:
+                    nn.init.xavier_uniform_(p.data)
+            else:
+                nn.init.zeros_(p.data)
+
+    def init_hidden(self, 
+                    batch_size,
+                    device):
+        """Initialize a zero state for LSTM.
+        """
+        h0 = torch.zeros(batch_size, self.units, device=device)
+        c0 = torch.zeros(batch_size, self.units, device=device)
+        return (h0, c0)
 
 
 class CommandDecoder(nn.Module):
