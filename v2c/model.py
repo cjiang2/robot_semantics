@@ -106,21 +106,28 @@ class VideoEncoder(nn.Module):
         super(VideoEncoder, self).__init__()
         self.units = units
         self.linear = nn.Linear(in_size, units)
+
+        self.init_h = nn.Linear(units, units)
+        self.init_c = nn.Linear(units, units)
         self.lstm_cell = nn.LSTMCell(units, units)
+
+        #self.attention = BahdanauAttention(in_size, units)
+
         self.reset_parameters()
 
     def forward(self, 
                 Xv):
-        # Phase 1: Encoding Stage
         # Encode video features with one dense layer and lstm
         # State of this lstm to be used for lstm2 language generator
+        # Xv: (batch_size, num_clips, in_size)
         Xv = self.linear(Xv)
-        #print('linear:', Xv.shape)
         Xv = F.relu(Xv)
 
         # Encode video feature using LSTM
-        (hi, ci) = self.init_hidden(Xv.shape[0], Xv.device)
+        # Initialize LSTM state using 1st frame feature from clip
+        hi, ci = torch.tanh(self.init_h(Xv[:,0,:])), torch.tanh(self.init_c(Xv[:,0,:]))
         for timestep in range(Xv.shape[1]):
+            # Calculate frame-level attention feature
             hi, ci = self.lstm_cell(Xv[:,timestep,:], (hi, ci))
         #print('lstm', 'hi:', hi.shape, 'ci:', ci.shape)
         return hi, (hi, ci)
@@ -134,15 +141,6 @@ class VideoEncoder(nn.Module):
                     nn.init.xavier_uniform_(p.data)
             else:
                 nn.init.zeros_(p.data)
-
-    def init_hidden(self, 
-                    batch_size,
-                    device):
-        """Initialize a zero state for LSTM.
-        """
-        h0 = torch.zeros(batch_size, self.units, device=device)
-        c0 = torch.zeros(batch_size, self.units, device=device)
-        return (h0, c0)
 
 
 class CommandDecoder(nn.Module):
