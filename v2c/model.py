@@ -70,8 +70,9 @@ class VideoEncoder(nn.Module):
                  in_size,
                  units):
         super(VideoEncoder, self).__init__()
+        self.units = units
         self.linear = nn.Linear(in_size, units)
-        self.lstm = nn.LSTM(units, units, batch_first=True)
+        self.lstm_cell = nn.LSTMCell(units, units)
         self.reset_parameters()
 
     def forward(self, 
@@ -83,11 +84,12 @@ class VideoEncoder(nn.Module):
         #print('linear:', Xv.shape)
         Xv = F.relu(Xv)
 
-        Xv, (hi, ci) = self.lstm(Xv)
-        Xv = Xv[:,-1,:]     # Only need the last timestep
-        hi, ci = hi[0,:,:], ci[0,:,:]
-        #print('lstm:', Xv.shape, 'hi:', hi.shape, 'ci:', ci.shape)
-        return Xv, (hi, ci)
+        # Encode video feature using attention and LSTM
+        (hi, ci) = self.init_hidden(Xv.shape[0], Xv.device)
+        for timestep in range(Xv.shape[1]):
+            hi, ci = self.lstm_cell(Xv[:,timestep,:], (hi, ci))
+        #print('lstm', 'hi:', hi.shape, 'ci:', ci.shape)
+        return hi, (hi, ci)
 
     def reset_parameters(self):
         for n, p in self.named_parameters():
@@ -96,6 +98,49 @@ class VideoEncoder(nn.Module):
                     nn.init.orthogonal_(p.data)
                 else:
                     nn.init.xavier_uniform_(p.data)
+            else:
+                nn.init.zeros_(p.data)
+
+    def init_hidden(self, 
+                    batch_size,
+                    device):
+        """Initialize a zero state for LSTM.
+        """
+        h0 = torch.zeros(batch_size, self.units, device=device)
+        c0 = torch.zeros(batch_size, self.units, device=device)
+        return (h0, c0)
+
+
+class BahdanauAttention(nn.Module):
+    """Minimal implementation of Bahdanau Attention.
+    """
+    def __init__(self, 
+                 enc_units, 
+                 hidden_units):
+        super(BahdanauAttention, self).__init__()
+        self.W = nn.Linear(enc_units, hidden_units, bias=False)
+        self.U = nn.Linear(enc_units, hidden_units, bias=False)
+        self.V = nn.Linear(enc_units, 1, bias=False)
+        self.reset_parameters()
+        
+    def forward(self, 
+                x, 
+                h):
+        # x: (batch_size, h*w, enc_units), h: (batch_size, hidden_units)
+        score = self.V(torch.tanh(self.W(x) + self.U(h).unsqueeze(1)))
+
+        # score shape == (batch_size, h*w, 1)
+        alpha = F.softmax(score, dim=1)
+
+        # context vector == (batch_size, hidden_units)
+        context_vec = (alpha * x).sum(dim=1)
+
+        return context_vec, alpha
+
+    def reset_parameters(self):
+        for n, p in self.named_parameters():
+            if 'weight' in n:
+                nn.init.xavier_uniform_(p.data)
             else:
                 nn.init.zeros_(p.data)
 
@@ -291,7 +336,7 @@ class Video2Command():
         for i, (Xv, S_true, clip_names) in enumerate(test_loader):
             # Mini-batch
             Xv, S_true = Xv.to(self.device), S_true.to(self.device)
-            S_pred = self.predict(Xv)
+            S_pred = self.predict(Xv, self.vocab)
             y_pred.append(S_pred)
             y_true.append(S_true)
             fnames += clip_names
