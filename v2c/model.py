@@ -157,15 +157,14 @@ class CommandDecoder(nn.Module):
         self.embed_dim = embed_dim
 
         self.embed = nn.Embedding(vocab_size, embed_dim)
-        self.lstm_cell = nn.LSTMCell(embed_dim + units, units)
+        self.lstm_cell = nn.LSTMCell(embed_dim, units)
         self.logits = nn.Linear(units, vocab_size, bias=True)
         self.softmax = nn.LogSoftmax(dim=1)
         self.reset_parameters(bias_vector)
 
     def forward(self, 
                 Xs, 
-                states, 
-                Xv):
+                states):
         # Phase 2: Decoding Stage
         # Given the previous word token, generate next caption word using lstm2
         # Sequence processing and generating
@@ -174,11 +173,11 @@ class CommandDecoder(nn.Module):
         Xs = self.embed(Xs)
         #print('embed:', Xs.shape)
         #print('Xv:', Xv.shape)
-        x = torch.cat((Xv, Xs), dim=-1)
+        #x = torch.cat((Xv, Xs), dim=-1)
         #print(x.shape)
         #exit()
 
-        hi, ci = self.lstm_cell(x, states)
+        hi, ci = self.lstm_cell(Xs, states)
         #print('out:', hi.shape, 'hi:', states[0].shape, 'ci:', states[1].shape)
 
         x = self.logits(hi)
@@ -186,14 +185,6 @@ class CommandDecoder(nn.Module):
         x = self.softmax(x)
         #print('softmax:', x.shape)
         return x, (hi, ci)
-
-    def init_hidden(self, 
-                    batch_size):
-        """Initialize a zero state for LSTM.
-        """
-        h0 = torch.zeros(batch_size, self.units)
-        c0 = torch.zeros(batch_size, self.units)
-        return (h0, c0)
 
     def reset_parameters(self,
                          bias_vector):
@@ -286,7 +277,7 @@ class Video2Command():
             # Decoding loop
             Xs = S[:,0]     # First word is always START_WORD
             for timestep in range(self.config.MAXLEN - 1):
-                probs, states = self.command_decoder(Xs, states, Xv)
+                probs, states = self.command_decoder(Xs, states)
                 # Calculate loss per word
                 loss += self.loss_objective(probs, S[:,timestep+1])
                 # Teacher-Forcing for command decoder
@@ -362,7 +353,7 @@ class Video2Command():
             #_, states = self.command_decoder(None, states, Xv=Xv)   # Encode video features 1st
             for timestep in range(self.config.MAXLEN - 1):
                 Xs = S[:,timestep]
-                probs, states = self.command_decoder(Xs, states, Xv)
+                probs, states = self.command_decoder(Xs, states)
                 preds = torch.argmax(probs, dim=1)    # Collect prediction
                 S[:,timestep+1] = preds
         return S
