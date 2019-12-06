@@ -117,7 +117,7 @@ class VideoEncoder(nn.Module):
         self.init_c = nn.Linear(units, units)
         self.lstm_cell = nn.LSTMCell(units, units)
 
-        self.attention = BahdanauAttention(in_size, units)
+        self.attention = BahdanauAttention(units, units)
 
         self.reset_parameters()
 
@@ -137,8 +137,9 @@ class VideoEncoder(nn.Module):
             # Calculate frame-level attention feature
             context_vec, alpha = self.attention(Xv[:,timestep,:,:], hi)
             alphas.append(alpha)
+
             # Encode context vector using LSTM
-            hi, ci = self.lstm_cell(Xv[:,timestep,:], (hi, ci))
+            hi, ci = self.lstm_cell(context_vec, (hi, ci))
 
         return hi, (hi, ci), torch.cat(alphas, dim=0)
 
