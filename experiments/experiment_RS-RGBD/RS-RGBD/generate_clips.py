@@ -63,7 +63,6 @@ def extract(dataset_path,
             # Get features
             Xv = Xv.to(device)
             outputs = model(Xv)
-            outputs = outputs.view(outputs.shape[0], -1)
 
             # Save into clips
             feature_fpath = os.path.join(output_path, clip_name+'_clip.npy')

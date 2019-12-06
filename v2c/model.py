@@ -27,7 +27,9 @@ class CNNWrapper(nn.Module):
                 x):
         with torch.no_grad():
             x = self.model(x)
-        x = x.reshape(x.size(0), -1)
+            #x = x.reshape(x.size(0), -1)
+            x = x.permute(0, 2, 3, 1)
+            x = x.view(x.size(0), x.size(1)*x.size(2), x.size(3))
         return x
 
     def init_backbone(self,
@@ -37,23 +39,27 @@ class CNNWrapper(nn.Module):
         if self.backbone == 'resnet50':
             model = resnet.resnet50(pretrained=False)   # Use Caffe ResNet instead
             model.load_state_dict(torch.load(checkpoint_path))
+            modules = list(model.children())[:-2]
 
         elif self.backbone == 'resnet101':
             model = resnet.resnet101(pretrained=False)
             model.load_state_dict(torch.load(checkpoint_path))
+            modules = list(model.children())[:-2]
 
         elif self.backbone == 'resnet152':
             model = resnet.resnet152(pretrained=False)
             model.load_state_dict(torch.load(checkpoint_path))
+            modules = list(model.children())[:-2]
 
         elif self.backbone == 'vgg16':
             model = models.vgg16(pretrained=True)
+            modules = list(model.children())[:-1]
 
         elif self.backbone == 'vgg19':
             model = models.vgg19(pretrained=True)
+            modules = list(model.children())[:-1]
 
         # Remove the last classifier layer
-        modules = list(model.children())[:-1]
         model = nn.Sequential(*modules)
         
         return model
@@ -111,7 +117,7 @@ class VideoEncoder(nn.Module):
         self.init_c = nn.Linear(units, units)
         self.lstm_cell = nn.LSTMCell(units, units)
 
-        #self.attention = BahdanauAttention(in_size, units)
+        self.attention = BahdanauAttention(in_size, units)
 
         self.reset_parameters()
 
@@ -119,18 +125,22 @@ class VideoEncoder(nn.Module):
                 Xv):
         # Encode video features with one dense layer and lstm
         # State of this lstm to be used for lstm2 language generator
-        # Xv: (batch_size, num_clips, in_size)
+        # Xv: (batch_size, num_clips, h*w, in_size)
         Xv = self.linear(Xv)
         Xv = F.relu(Xv)
 
         # Encode video feature using LSTM
         # Initialize LSTM state using 1st frame feature from clip
-        hi, ci = torch.tanh(self.init_h(Xv[:,0,:])), torch.tanh(self.init_c(Xv[:,0,:]))
+        alphas = []
+        hi, ci = torch.tanh(self.init_h(Xv.mean(dim=2)[:,0,:])), torch.tanh(self.init_c(Xv.mean(dim=2)[:,0,:]))
         for timestep in range(Xv.shape[1]):
             # Calculate frame-level attention feature
+            context_vec, alpha = self.attention(Xv[:,timestep,:,:], hi)
+            alphas.append(alpha)
+            # Encode context vector using LSTM
             hi, ci = self.lstm_cell(Xv[:,timestep,:], (hi, ci))
-        #print('lstm', 'hi:', hi.shape, 'ci:', ci.shape)
-        return hi, (hi, ci)
+
+        return hi, (hi, ci), torch.cat(alphas, dim=0)
 
     def reset_parameters(self):
         for n, p in self.named_parameters():
@@ -141,6 +151,15 @@ class VideoEncoder(nn.Module):
                     nn.init.xavier_uniform_(p.data)
             else:
                 nn.init.zeros_(p.data)
+
+    def init_hidden(self, 
+                    batch_size,
+                    device):
+        """Initialize a zero state for LSTM.
+        """
+        h0 = torch.zeros(batch_size, self.units, device=device)
+        c0 = torch.zeros(batch_size, self.units, device=device)
+        return (h0, c0)
 
 
 class CommandDecoder(nn.Module):
@@ -157,14 +176,15 @@ class CommandDecoder(nn.Module):
         self.embed_dim = embed_dim
 
         self.embed = nn.Embedding(vocab_size, embed_dim)
-        self.lstm_cell = nn.LSTMCell(embed_dim, units)
+        self.lstm_cell = nn.LSTMCell(embed_dim + units, units)
         self.logits = nn.Linear(units, vocab_size, bias=True)
         self.softmax = nn.LogSoftmax(dim=1)
         self.reset_parameters(bias_vector)
 
     def forward(self, 
                 Xs, 
-                states):
+                states, 
+                Xv):
         # Phase 2: Decoding Stage
         # Given the previous word token, generate next caption word using lstm2
         # Sequence processing and generating
@@ -173,11 +193,11 @@ class CommandDecoder(nn.Module):
         Xs = self.embed(Xs)
         #print('embed:', Xs.shape)
         #print('Xv:', Xv.shape)
-        #x = torch.cat((Xv, Xs), dim=-1)
+        x = torch.cat((Xv, Xs), dim=-1)
         #print(x.shape)
         #exit()
 
-        hi, ci = self.lstm_cell(Xs, states)
+        hi, ci = self.lstm_cell(x, states)
         #print('out:', hi.shape, 'hi:', states[0].shape, 'ci:', states[1].shape)
 
         x = self.logits(hi)
@@ -185,6 +205,14 @@ class CommandDecoder(nn.Module):
         x = self.softmax(x)
         #print('softmax:', x.shape)
         return x, (hi, ci)
+
+    def init_hidden(self, 
+                    batch_size):
+        """Initialize a zero state for LSTM.
+        """
+        h0 = torch.zeros(batch_size, self.units)
+        c0 = torch.zeros(batch_size, self.units)
+        return (h0, c0)
 
     def reset_parameters(self,
                          bias_vector):
@@ -266,7 +294,7 @@ class Video2Command():
 
             # Forward pass
             # Video feature extraction 1st
-            Xv, states = self.video_encoder(Xv)
+            Xv, states, alphas = self.video_encoder(Xv)
 
             # Calculate mask against zero-padding
             S_mask = S != 0
@@ -277,7 +305,7 @@ class Video2Command():
             # Decoding loop
             Xs = S[:,0]     # First word is always START_WORD
             for timestep in range(self.config.MAXLEN - 1):
-                probs, states = self.command_decoder(Xs, states)
+                probs, states = self.command_decoder(Xs, states, Xv)
                 # Calculate loss per word
                 loss += self.loss_objective(probs, S[:,timestep+1])
                 # Teacher-Forcing for command decoder
@@ -353,7 +381,7 @@ class Video2Command():
             #_, states = self.command_decoder(None, states, Xv=Xv)   # Encode video features 1st
             for timestep in range(self.config.MAXLEN - 1):
                 Xs = S[:,timestep]
-                probs, states = self.command_decoder(Xs, states)
+                probs, states = self.command_decoder(Xs, states, Xv)
                 preds = torch.argmax(probs, dim=1)    # Collect prediction
                 S[:,timestep+1] = preds
         return S
