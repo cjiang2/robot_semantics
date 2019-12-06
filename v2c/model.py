@@ -349,18 +349,19 @@ class Video2Command():
         """Run the evaluation pipeline over the test dataset.
         """
         assert self.config.MODE == 'test'
-        y_pred, y_true, fnames = [], [], []
+        y_pred, y_true, all_alphas, fnames = [], [], [], []
         # Evaluation over the entire test dataset
         for i, (Xv, S_true, clip_names) in enumerate(test_loader):
             # Mini-batch
             Xv, S_true = Xv.to(self.device), S_true.to(self.device)
-            S_pred = self.predict(Xv)
+            S_pred, alphas = self.predict(Xv)
+            all_alphas.append(alphas)
             y_pred.append(S_pred)
             y_true.append(S_true)
             fnames += clip_names
         y_pred = torch.cat(y_pred, dim=0)
         y_true = torch.cat(y_true, dim=0)
-        return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames
+        return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames, all_alphas
 
     def predict(self, 
                 Xv):
@@ -376,7 +377,7 @@ class Video2Command():
             S = S.to(self.device)
 
             # Start v2c prediction pipeline
-            Xv, states = self.video_encoder(Xv)
+            Xv, states, alphas = self.video_encoder(Xv)
 
             #states = self.command_decoder.reset_states(Xv.shape[0])
             #_, states = self.command_decoder(None, states, Xv=Xv)   # Encode video features 1st
@@ -385,7 +386,7 @@ class Video2Command():
                 probs, states = self.command_decoder(Xs, states, Xv)
                 preds = torch.argmax(probs, dim=1)    # Collect prediction
                 S[:,timestep+1] = preds
-        return S
+        return S, alphas
 
     def save_weights(self, 
                      epoch):

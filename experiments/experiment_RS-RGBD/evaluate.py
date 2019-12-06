@@ -72,7 +72,7 @@ def main():
             v2c_model = init_model(config, vocab, CHECKPOINT_FILE)
 
             # Evaluate
-            y_pred, y_true, fnames = v2c_model.evaluate(test_loader)
+            y_pred, y_true, fnames, all_alphas = v2c_model.evaluate(test_loader)
 
             # Save to evaluation file
             f = open(os.path.join(config.CHECKPOINT_PATH, 'prediction', 'prediction_{}.txt'.format(idx)), 'w')
