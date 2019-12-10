@@ -73,11 +73,12 @@ class BahdanauAttention(nn.Module):
     """
     def __init__(self, 
                  enc_units, 
-                 hidden_units):
+                 hidden_units,
+                 bias=False):
         super(BahdanauAttention, self).__init__()
-        self.W = nn.Linear(enc_units, hidden_units, bias=False)
-        self.U = nn.Linear(enc_units, hidden_units, bias=False)
-        self.V = nn.Linear(enc_units, 1, bias=False)
+        self.W = nn.Linear(enc_units, hidden_units, bias=bias)
+        self.U = nn.Linear(enc_units, hidden_units, bias=bias)
+        self.V = nn.Linear(enc_units, 1, bias=bias)
         self.reset_parameters()
         
     def forward(self, 
@@ -117,7 +118,7 @@ class VideoEncoder(nn.Module):
         self.init_c = nn.Linear(units, units)
         self.lstm_cell = nn.LSTMCell(units, units)
 
-        self.attention = BahdanauAttention(units, units)
+        self.attention = BahdanauAttention(units, units, bias=False)
 
         self.reset_parameters()
 
@@ -153,15 +154,6 @@ class VideoEncoder(nn.Module):
             else:
                 nn.init.zeros_(p.data)
 
-    def init_hidden(self, 
-                    batch_size,
-                    device):
-        """Initialize a zero state for LSTM.
-        """
-        h0 = torch.zeros(batch_size, self.units, device=device)
-        c0 = torch.zeros(batch_size, self.units, device=device)
-        return (h0, c0)
-
 
 class CommandDecoder(nn.Module):
     """Module to decode features and generate word for captions
@@ -189,31 +181,14 @@ class CommandDecoder(nn.Module):
         # Phase 2: Decoding Stage
         # Given the previous word token, generate next caption word using lstm2
         # Sequence processing and generating
-        #print('sentence decoding stage:')
-        #print('Xs:', Xs.shape)
         Xs = self.embed(Xs)
-        #print('embed:', Xs.shape)
-        #print('Xv:', Xv.shape)
         x = torch.cat((Xv, Xs), dim=-1)
-        #print(x.shape)
-        #exit()
 
         hi, ci = self.lstm_cell(x, states)
-        #print('out:', hi.shape, 'hi:', states[0].shape, 'ci:', states[1].shape)
 
         x = self.logits(hi)
-        #print('logits:', x.shape)
         x = self.softmax(x)
-        #print('softmax:', x.shape)
         return x, (hi, ci)
-
-    def init_hidden(self, 
-                    batch_size):
-        """Initialize a zero state for LSTM.
-        """
-        h0 = torch.zeros(batch_size, self.units)
-        c0 = torch.zeros(batch_size, self.units)
-        return (h0, c0)
 
     def reset_parameters(self,
                          bias_vector):
@@ -361,7 +336,8 @@ class Video2Command():
             fnames += clip_names
         y_pred = torch.cat(y_pred, dim=0)
         y_true = torch.cat(y_true, dim=0)
-        return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames, all_alphas
+        all_alphas = torch.cat(all_alphas, dim=0)
+        return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames, all_alphas.cpu().numpy()
 
     def predict(self, 
                 Xv):
