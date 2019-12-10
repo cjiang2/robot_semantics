@@ -114,8 +114,6 @@ class VideoEncoder(nn.Module):
         self.units = units
         self.linear = nn.Linear(in_size, units)
 
-        self.init_h = nn.Linear(units, units)
-        self.init_c = nn.Linear(units, units)
         self.lstm_cell = nn.LSTMCell(units, units)
 
         self.attention = BahdanauAttention(units, units, bias=False)
@@ -133,7 +131,7 @@ class VideoEncoder(nn.Module):
         # Encode video feature using LSTM
         # Initialize LSTM state using 1st frame feature from clip
         alphas = []
-        hi, ci = torch.tanh(self.init_h(Xv.mean(dim=2)[:,0,:])), torch.tanh(self.init_c(Xv.mean(dim=2)[:,0,:]))
+        (hi, ci) = self.init_hidden(Xv.shape[0], Xv.device)
         for timestep in range(Xv.shape[1]):
             # Calculate frame-level attention feature
             context_vec, alpha = self.attention(Xv[:,timestep,:,:], hi)
@@ -153,6 +151,15 @@ class VideoEncoder(nn.Module):
                     nn.init.xavier_uniform_(p.data)
             else:
                 nn.init.zeros_(p.data)
+
+    def init_hidden(self, 
+                    batch_size,
+                    device):
+        """Initialize a zero state for LSTM.
+        """
+        h0 = torch.zeros(batch_size, self.units, device=device)
+        c0 = torch.zeros(batch_size, self.units, device=device)
+        return (h0, c0)
 
 
 class CommandDecoder(nn.Module):
