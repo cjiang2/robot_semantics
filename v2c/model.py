@@ -140,7 +140,7 @@ class VideoEncoder(nn.Module):
             # Encode context vector using LSTM
             hi, ci = self.lstm_cell(context_vec, (hi, ci))
 
-        return hi, (hi, ci), torch.cat(alphas, dim=0)
+        return hi, (hi, ci), torch.stack(alphas, dim=1)
 
     def reset_parameters(self):
         for n, p in self.named_parameters():
