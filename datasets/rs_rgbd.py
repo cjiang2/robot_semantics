@@ -192,7 +192,7 @@ def override_caption(caption):
     """
     caption = caption.replace('lefthand', 'humanhand')
     caption = caption.replace('righthand', 'humanhand')
-    caption = caption.replace('_', ' ')
+    #caption = caption.replace('_', ' ')
     return caption
 
 def process_caption(captions,
@@ -227,16 +227,22 @@ def process_caption(captions,
     return targets, vocab, config
 
 def parse_clip_paths_and_captions(config,
-                                  vocab=None):
+                                  vocab=None,
+                                  video_name=None):
     """Helper function to parse paths to clips, load and process captions and 
     return (clip, target) pairs.
+    Added option to load specified clips for one video if needed.
     """
     # Load paths to caption and clips
     # TODO: Only accept one folder from the config.SETTINGS
     feature_path = os.path.join(config.DATASET_PATH, 
                                 list(config.BACKBONE.keys())[0], 
                                 config.SETTINGS[0])
-    clips = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
+    if video_name is not None:
+        clips = sorted(glob.glob(os.path.join(feature_path, '{}_*_clip.npy'.format(video_name))))        
+    else:
+        clips = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
+
     captions = ['{}'.format(str(np.load(x.replace('_clip', '_caption')))) for x in clips]
 
     # Sentences to Sequences

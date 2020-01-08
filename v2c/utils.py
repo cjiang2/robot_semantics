@@ -80,7 +80,7 @@ class Vocabulary(object):
 
 def build_vocab(texts, 
                 frequency=None, 
-                filters='!"#$%&()*+.,-/:;=?@[\]^_`{|}~ ',
+                filters='!"#$%&()*+.,-/:;=?@[\]^`{|}~ ',
                 lower=True,
                 split=" ", 
                 start_word='<sos>',
@@ -120,7 +120,7 @@ def get_maxlen(texts):
     return max([len(x.split(" ")) for x in texts])
 
 def word_tokenize(text,
-                  filters='!"#$%&()*+.,-/:;=?@[\]^_`{|}~ ',
+                  filters='!"#$%&()*+.,-/:;=?@[\]^`{|}~ ',
                   lower=True, 
                   split=" "):
     """Converts a text to a sequence of words (or tokens).
@@ -133,7 +133,7 @@ def word_tokenize(text,
 
 def text_to_sequence(text,
                      vocab,
-                     filters='!"#$%&()*+.,-/:;=?@[\]^_`{|}~ ',
+                     filters='!"#$%&()*+.,-/:;=?@[\]^`{|}~ ',
                      lower=True, 
                      split=" "):
     """Convert a text to numerical sequence.
@@ -161,7 +161,7 @@ def sequence_to_text(seq,
 
 def texts_to_sequences(texts,
                        vocab,
-                       filters='!"#$%&()*+.,-/:;=?@[\]^_`{|}~ ',
+                       filters='!"#$%&()*+.,-/:;=?@[\]^`{|}~ ',
                        lower=True, 
                        split=" "):
     """Wrapper to convert batch of texts to sequences.
