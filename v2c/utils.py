@@ -296,12 +296,15 @@ class StreamlineVideoQueue(object):
 # Default type2str from owlready2
 type2str_restriction = owl.class_construct._restriction_type_2_label
 
-def _process_entity(entity, job_name):
+def _process_entity(entity, job_name, orig_entity, kg):
     """Helper: Append entity for the specified job.
     """
-    return entity, job_name
+    graph = (orig_entity, entity, job_name)
+    if graph not in kg:
+        kg.append(graph)
+    return kg
 
-def _process_restriction(restriction):
+def _process_restriction(restriction, entity, kg):
     """Helper: Append restriction.
     """
     assert restriction.__module__ == 'owlready2.class_construct'
@@ -310,9 +313,20 @@ def _process_restriction(restriction):
     object_property, value = restriction.property, restriction.value
     restriction_type = type2str_restriction[restriction.type]
     
-    # Things needed
-    rel = '{},{}'.format(object_property.name, restriction_type)
-    return value, rel
+    # Separate logical or for 'only'
+    if restriction_type == 'only':
+        for or_value in value.Classes:
+            graph = (entity, or_value, '{},{}'.format(object_property.name, restriction_type))
+            if graph not in kg:
+                kg.append(graph)
+            
+    # No more processing for 'some'
+    else:
+        graph = (entity, value, '{},{}'.format(object_property.name, restriction_type))
+        if graph not in kg:
+            kg.append(graph)
+        
+    return kg
 
 def _process_subclasses(entity, kg):
     """Helper: Append subclasses.
@@ -329,6 +343,16 @@ def _process_subclasses(entity, kg):
         if (subcls, entity, 'subclass_of') not in kg:
             kg.append((subcls, entity, 'subclass_of'))
 
+    return kg
+
+def _populate_subclass_rel(kg):
+    """Helper: Ensure 'subclass_of' and 'has_subclass' always appear in pairs.
+    """
+    for graph in kg:
+        if graph[2] == 'subclass_of' and (graph[1], graph[0], 'has_subclass') not in kg:
+            kg.append((graph[1], graph[0], 'has_subclass'))
+        elif graph[2] == 'has_subclass' and (graph[1], graph[0], 'subclass_of') not in kg:
+            kg.append((graph[1], graph[0], 'subclass_of'))
     return kg
 
 def _process_instances(entity, kg):
@@ -357,44 +381,34 @@ def generate_knowledge_graph(entity):
     kg = _process_subclasses(entity, kg)
 
     # Part 2: Collect equivalent_to
-    equivalent_to_list = entity.INDIRECT_equivalent_to  # NOTE: Weird bug here, have to use INDIRECT
+    try:
+        equivalent_to_list = entity.INDIRECT_equivalent_to  # NOTE: Weird bug here, have to use INDIRECT
+    except:
+        equivalent_to_list = []
     for et in equivalent_to_list:
         # equivalent_to AND objects:
         if et.__module__ == 'owlready2.class_construct':
-            for x in et.__dict__['Classes']:
+            for x in et.Classes:
                 # For class restriction, retrieve relevant infos inside
                 if x.__module__ == 'owlready2.class_construct':
-                    end_node, rel = _process_restriction(x)
-                
-                else:
-                    end_node, rel = None, ''
-
-                if ((entity, end_node, rel) not in kg) and \
-                   (end_node is not None and len(rel) != 0):
-                    kg.append((entity, end_node, rel))
+                    kg = _process_restriction(x, entity, kg)
                     
     # Part 3: Look into is_a
     is_a_list = entity.is_a
     for x in is_a_list:
         # Entity: is_a indicates subclasses
         if x.__module__ == 'owlready2.entity':
-            end_node, rel = _process_entity(x, 'subclass_of')
+            kg = _process_entity(x, 'subclass_of', entity, kg)
                 
         # Restriction
         elif x.__module__ == 'owlready2.class_construct':
-            end_node, rel = _process_restriction(x)
-
-        else:
-            end_node, rel = None, ''
-                    
-        if ((entity, end_node, rel) not in kg) and \
-           (end_node is not None and len(rel) != 0):
-            kg.append((entity, end_node, rel))
-            if rel == 'subclass_of' and (end_node, entity, 'has_subclass') not in kg:
-                kg.append((end_node, entity, 'has_subclass'))
+            kg = _process_restriction(x, entity, kg)
         
     # Part 4: Look into instances
     kg = _process_instances(entity, kg)
+    
+    # Part 5: Some additional filters
+    kg = _populate_subclass_rel(kg)
     
     return kg
 
@@ -419,17 +433,21 @@ def keyword_search_onto(keyword, onto):
     """
     classes = list(onto.classes())
     classes_str = [x.name for x in classes]
-
-    # Simple search method from difflib
-    res = difflib.get_close_matches(keyword, classes_str)[0]
-
-    entity = classes[classes_str.index(res)]
-    return entity
+    all_res = difflib.get_close_matches(keyword, classes_str)
+    # Only grab the most probable search keyword
+    if len(all_res) > 0:
+        res = all_res[0]
+        return classes[classes_str.index(res)]
+    else:
+        return None
 
 def ontograf_simple(orig_entity, onto):
     """Interface func to search and retrieve infor for a given
     entity inside onto.
     """
+    if orig_entity is None:
+        return []
+    
     # Initial KG search
     kg = generate_knowledge_graph(orig_entity)
     
