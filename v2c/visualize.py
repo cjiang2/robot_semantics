@@ -15,7 +15,7 @@ import graphviz
 # Functions for knowledge graph visualization
 # ------------------------------------------------------------
 
-def visualize_graph(kg):
+def convert_to_digraph(kg):
     """Helper function to construct graphviz.Digraph visualizing 
     knowledge graph.
     """
