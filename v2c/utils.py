@@ -3,6 +3,7 @@ Robot Semantics
 Generic utils for Vision-Language processing and knowledge modeling.
 """
 import os
+import re
 import difflib
 import sys
 from collections import Counter
@@ -296,15 +297,24 @@ class StreamlineVideoQueue(object):
 # Default type2str from owlready2
 type2str_restriction = owl.class_construct._restriction_type_2_label
 
-def _process_entity(entity, job_name, orig_entity, kg):
+def init_onto(onto_path):
+    """Helper: read ontology file & run default reasoner.
+    """
+    onto_path = 'file://' + onto_path
+    onto = owl.get_ontology(onto_path).load()
+    print('Loaded owl file at:', onto_path)
+    owl.sync_reasoner()
+    return onto
+
+def _process_entity(entity, job_name, orig_entity, graph):
     """Helper: Append entity for the specified job.
     """
-    graph = (orig_entity, entity, job_name)
-    if graph not in kg:
-        kg.append(graph)
-    return kg
+    edge = (orig_entity, job_name, entity)
+    if edge not in graph:
+        graph.append(edge)
+    return graph
 
-def _process_restriction(restriction, entity, kg):
+def _process_restriction(restriction, entity, graph):
     """Helper: Append restriction.
     """
     assert restriction.__module__ == 'owlready2.class_construct'
@@ -316,19 +326,19 @@ def _process_restriction(restriction, entity, kg):
     # Separate logical or for 'only'
     if restriction_type == 'only':
         for or_value in value.Classes:
-            graph = (entity, or_value, '{},{}'.format(object_property.name, restriction_type))
-            if graph not in kg:
-                kg.append(graph)
+            edge = (entity, '{},{}'.format(object_property.name, restriction_type), or_value)
+            if edge not in graph:
+                graph.append(edge)
             
     # No more processing for 'some'
     else:
-        graph = (entity, value, '{},{}'.format(object_property.name, restriction_type))
-        if graph not in kg:
-            kg.append(graph)
+        edge = (entity, '{},{}'.format(object_property.name, restriction_type), value)
+        if edge not in graph:
+            graph.append(edge)
         
-    return kg
+    return graph
 
-def _process_subclasses(entity, kg):
+def _process_subclasses(entity, graph):
     """Helper: Append subclasses.
     """
     # Safely grab all subclasses
@@ -338,24 +348,24 @@ def _process_subclasses(entity, kg):
         subclses = []
 
     for subcls in subclses:
-        if (entity, subcls, 'has_subclass') not in kg:
-            kg.append((entity, subcls, 'has_subclass'))
-        if (subcls, entity, 'subclass_of') not in kg:
-            kg.append((subcls, entity, 'subclass_of'))
+        if (entity, 'has_subclass', subcls) not in graph:
+            graph.append((entity, 'has_subclass', subcls))
+        if (subcls, 'subclass_of', entity) not in graph:
+            graph.append((subcls, 'subclass_of', entity))
 
-    return kg
+    return graph
 
-def _populate_subclass_rel(kg):
+def _populate_subclass_rel(graph):
     """Helper: Ensure 'subclass_of' and 'has_subclass' always appear in pairs.
     """
-    for graph in kg:
-        if graph[2] == 'subclass_of' and (graph[1], graph[0], 'has_subclass') not in kg:
-            kg.append((graph[1], graph[0], 'has_subclass'))
-        elif graph[2] == 'has_subclass' and (graph[1], graph[0], 'subclass_of') not in kg:
-            kg.append((graph[1], graph[0], 'subclass_of'))
-    return kg
+    for edge in graph:
+        if edge[1] == 'subclass_of' and (edge[2], 'has_subclass', edge[0]) not in graph:
+            graph.append((edge[2], 'has_subclass', edge[0]))
+        elif edge[1] == 'has_subclass' and (edge[2], 'subclass_of', edge[0]) not in graph:
+            graph.append((edge[2], 'subclass_of', edge[0]))
+    return graph
 
-def _process_instances(entity, kg):
+def _process_instances(entity, graph):
     """Helper: Append individuals.
     """
     # Safely grab all individuals
@@ -366,19 +376,19 @@ def _process_instances(entity, kg):
 
     for instance in instances:
         if instance.is_a[0] == entity:
-            if (entity, instance, 'has_individual') not in kg:
-                kg.append((entity, instance, 'has_individual'))
+            if (entity, 'has_individual', instance) not in graph:
+                graph.append((entity, 'has_individual', instance))
 
-    return kg
+    return graph
 
 def generate_knowledge_graph(entity):
     """Helper function to grab entity-relation from onto and 
     return as knowledge graph.
     """
-    kg = []
+    graph = []
 
     # Part 1: Append subclasses
-    kg = _process_subclasses(entity, kg)
+    graph = _process_subclasses(entity, graph)
 
     # Part 2: Collect equivalent_to
     try:
@@ -391,42 +401,42 @@ def generate_knowledge_graph(entity):
             for x in et.Classes:
                 # For class restriction, retrieve relevant infos inside
                 if x.__module__ == 'owlready2.class_construct':
-                    kg = _process_restriction(x, entity, kg)
+                    graph = _process_restriction(x, entity, graph)
                     
     # Part 3: Look into is_a
     is_a_list = entity.is_a
     for x in is_a_list:
         # Entity: is_a indicates subclasses
         if x.__module__ == 'owlready2.entity':
-            kg = _process_entity(x, 'subclass_of', entity, kg)
+            graph = _process_entity(x, 'subclass_of', entity, graph)
                 
         # Restriction
         elif x.__module__ == 'owlready2.class_construct':
-            kg = _process_restriction(x, entity, kg)
+            graph = _process_restriction(x, entity, graph)
         
     # Part 4: Look into instances
-    kg = _process_instances(entity, kg)
+    graph = _process_instances(entity, graph)
     
     # Part 5: Some additional filters
-    kg = _populate_subclass_rel(kg)
+    graph = _populate_subclass_rel(graph)
     
-    return kg
+    return graph
 
-def filter_kg(kg, onto):
-    """Helper: filter KG from some ill-logical entries.
+def _filter_graph(graph, onto):
+    """Helper: filter graph from some ill-logical entries.
     """
-    filtered_kg = []
+    filtered_graph = []
     # Grab all individuals
     individuals = list(onto.individuals())
 
-    for graph in kg:
+    for edge in graph:
         passed = True
         # Ill-logical individuals
-        if graph[0] in individuals:
+        if edge[0] in individuals:
             passed = False
         if passed:
-            filtered_kg.append(graph)
-    return filtered_kg
+            filtered_graph.append(edge)
+    return filtered_graph
 
 def keyword_search_onto(keyword, onto):
     """Search and index key entity from onto given keyword.
@@ -441,6 +451,19 @@ def keyword_search_onto(keyword, onto):
     else:
         return None
 
+def _to_string(graph):
+    """Helper: Convert everything collected inside graph list into
+    string.
+    """
+    for i in range(len(graph)):
+        edge = list(graph[i])
+        for k in range(len(edge)):
+            if type(edge[k]) is not str:
+                edge[k] = edge[k].name
+            edge[k] = edge[k].replace(',', ', ')
+        graph[i] = (edge[0], edge[1], edge[2])
+    return graph
+
 def ontograf_simple(orig_entity, onto):
     """Interface func to search and retrieve infor for a given
     entity inside onto.
@@ -448,23 +471,97 @@ def ontograf_simple(orig_entity, onto):
     if orig_entity is None:
         return []
     
-    # Initial KG search
-    kg = generate_knowledge_graph(orig_entity)
+    # Initial graph search
+    graph = generate_knowledge_graph(orig_entity)
     
-    # Prep for other key entities given the initial kg
+    # Prep for other key entities given the initial graph
     entities = []
-    for graph in kg:
-        entities.append(graph[1])
+    for edge in graph:
+        entities.append(edge[2])
 
     # 1st-level of filters, append more info from children and parent nodes
     for entity in entities:
-        sub_kg = generate_knowledge_graph(entity)
-        for graph in sub_kg:
-            if graph[1] == orig_entity:
-                if (entity, orig_entity, graph[2]) not in kg and entity != orig_entity:
-                    kg.append((entity, orig_entity, graph[2]))
+        sub_graph = generate_knowledge_graph(entity)
+        for edge in sub_graph:
+            if edge[2] == orig_entity:
+                if (entity, edge[1], orig_entity) not in graph and entity != orig_entity:
+                    graph.append((entity, edge[1], orig_entity))
 
     # 2nd-level of filters, filter some ill-logical nodes
-    kg = filter_kg(kg, onto)
+    graph = _filter_graph(graph, onto)
 
-    return kg
+    # Convert everything inside graph into str
+    graph = _to_string(graph)
+
+    return graph
+
+
+# ------------------------------------------------------------
+# Helper Functions to Process Knowledge Graph List
+# ------------------------------------------------------------
+
+def sentence_to_graph(sentence, 
+                      token2tag,
+                      filters='!"#$%&()*+.,-/:;=?@[\]^`{|}~ ',
+                      lower=True, 
+                      split=" "):
+    """Convert a command sentence into str graph form.
+    Graph: [(#node1, #relation, #node2), ...]
+    """
+    graph = []
+    tokens = word_tokenize(sentence, filters, lower, split)
+    tokens_new = [_match_onto(x) for x in tokens]
+
+    for i in range(len(tokens)):
+        tag = token2tag.get(tokens[i])
+        if tag is not None:
+            if tag == 'ACT_NOREL':
+                edge = (tokens_new[i-1], 'V2C_'+tokens[i].upper(), 'none')
+            elif tag == 'ACT':
+                edge = (tokens_new[i-1], 'V2C_'+tokens[i].upper(), tokens_new[i+1])
+            elif tag == 'FROM':
+                edge = (tokens_new[i+1], 'V2C_'+tokens[i].upper(), tokens_new[i-1])
+            elif tag == 'TO':
+                edge = (tokens_new[i-3], 'V2C_'+tokens[i].upper(), tokens_new[i+1])
+            else:
+                edge = None
+            if edge is not None: graph.append(edge)
+        
+    return graph
+
+def _match_onto(string):
+    """Helper: Clean command sentence, match tokens to 
+    entity naming inside ontology.
+    """
+    if string == 'humanhand':
+        return 'HumanHand'
+    new_string = '' + string[0].upper()
+    i = 1
+    while i < len(string):
+        char = string[i]
+        if char == '_':
+            new_string += string[i+1].upper()
+            i += 1
+        else:
+            new_string += string[i]
+        i += 1
+    return new_string
+
+def retrieve_knowledge_graph(sentence,
+                             token2tag,
+                             onto,
+                             filters='!"#$%&()*+.,-/:;=?@[\]^`{|}~ ',
+                             lower=True, 
+                             split=" "):
+    """Given command sentence, retrieve the external knowledge graph 
+    through searching from ontology.
+    """
+    tokens = word_tokenize(sentence, filters, lower, split)
+    graph = []
+    for token in tokens:
+        tag = token2tag.get(token)
+        token = token.replace('_', '')
+        if tag in ['ENT_OBJ']:
+            entity = keyword_search_onto(token, onto)
+            graph += ontograf_simple(entity, onto)
+    return graph

@@ -12,20 +12,19 @@ import skimage.transform
 import graphviz
 
 # ------------------------------------------------------------
-# Functions for knowledge graph visualization
+# Functions for graphviz visualization
 # ------------------------------------------------------------
 
-def convert_to_digraph(kg):
-    """Helper function to construct graphviz.Digraph visualizing 
-    knowledge graph.
+def convert_to_graphviz(graph, name='KG'):
+    """Helper function to convert edge graph into graphviz.Digraph.
     """
-    e = graphviz.Digraph('ER', filename='er.gv')
+    e = graphviz.Digraph(name)
     e.attr('node', shape='box')
-    for graph in kg:
+    for edge in graph:
         e.attr('node', shape='box')
-        e.node(graph[0].name)
-        e.node(graph[1].name)
-        e.edge(graph[0].name, graph[1].name, label=graph[2].replace(',', ', '))
+        e.node(edge[0])
+        e.node(edge[2])
+        e.edge(edge[0], edge[2], label=edge[1])
     return e
 
 
