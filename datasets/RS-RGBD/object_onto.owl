@@ -1,0 +1,1761 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#"
+     xml:base="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topActionRelation"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topClassProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topContextClassProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasFoodInsideGeneric -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasFoodInsideGeneric">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topClassProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Food"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topClassProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Food"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topClassProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topActionRelation"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topActionRelation -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topActionRelation">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topClassProperty -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topClassProperty">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topContextClassProperty -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#topContextClassProperty">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bag -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bag">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Beverage -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Beverage">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BlenderCup -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BlenderCup">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hard"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bottle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bottle">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bowl -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bowl">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Box -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Box">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BurningHot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BurningHot">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Can -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Can">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Centric -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Centric">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bowl"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Centric"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bowl"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Mug"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Centric"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Mug"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cereal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cereal">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Box"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasFoodInsideGeneric"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cereal"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Box"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PastaBox"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdMilk -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdMilk">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotMilk"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdOil -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdOil">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Oil"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Oil"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotOil"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdWater -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdWater">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Water"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Water"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotWater"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#DomainThing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Context -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Context"/>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#DomainThing -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#DomainThing">
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Partition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Food"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Food -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Food">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#DomainThing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Glass -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Glass">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Glass"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Mug"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Glass"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Mug"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassWaterKettle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassWaterKettle">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WaterKettle"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Glass"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WaterKettle"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardWaterKettle"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hard -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hard">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bottle"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hard"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bottle"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardFood -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardFood">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Food"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardWaterKettle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardWaterKettle">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WaterKettle"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hard"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WaterKettle"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotMilk -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotMilk">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotOil -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotOil">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Oil"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Oil"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotWater -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotWater">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Water"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasGenericTemperature"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Water"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BlenderCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassWaterKettle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardWaterKettle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPan"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPot"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MilkCan"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PaperCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PastaBox"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#RiceBag"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Iron -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Iron">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BurningHot"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPan">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pan"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Iron"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pan"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPot">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pot"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Iron"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pot"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MilkCan"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PaperCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Centric"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Glass"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hard"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Iron"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Plastic"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ThinPlastic"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Partition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdMilk"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotMilk"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MilkCan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MilkCan">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Can"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasFoodInsideGeneric"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Can"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Mug -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Mug">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Oil -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Oil">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdOil"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotOil"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#DomainThing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pan">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PaperCup -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PaperCup">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Partition -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Partition"/>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pasta -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pasta">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PastaBox -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PastaBox">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Box"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasFoodInsideGeneric"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pasta"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Box"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Plastic -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Plastic">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bottle"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Plastic"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bottle"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticCup -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticCup">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Plastic"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pot">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PourContext -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PourContext">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Context"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pasta"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+                            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+                            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+                            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pasta"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#StaticContext"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Rice -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Rice">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#RiceBag -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#RiceBag">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bag"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasFoodInsideGeneric"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Rice"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ThinPlastic"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bag"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#isGraspableBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#StaticContext -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#StaticContext">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Context"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#hasEntityPresented"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#DomainThing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#TemperatureValuePartition">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BurningHot"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hot"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Partition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ThinPlastic -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ThinPlastic">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MaterialPartition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canWithstandTemperature"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cold"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BlenderCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#MilkCan"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#canGrasp"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticCup"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Water -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Water">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ColdWater"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HotWater"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#FluidFood"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WaterKettle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WaterKettle">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricBowl"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug3 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug3">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug4 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug4">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CentricMug"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#CerealBox"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassMug"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassWaterKettle1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassWaterKettle1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassWaterKettle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardBottle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardWaterKettle1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardWaterKettle1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HardWaterKettle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPot1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPot1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#IronPot"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#OilBottle1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#OilBottle1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#OilBottle2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#OilBottle2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle3 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle3">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle4 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle4">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticBottle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#RiceBag1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#RiceBag1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#RiceBag"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bag"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bottle"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Bowl"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Box"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Can"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cup"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Mug"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pan"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Pot"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WaterKettle"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Beverage"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Cereal"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Milk"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Oil"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Rice"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Water"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#BlenderCup"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#GlassCup"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PaperCup"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#PlasticCup"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Centric"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Glass"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Hard"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Iron"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Paper"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Plastic"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#ThinPlastic"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Container"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Food"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Operator"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Context"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#DomainThing"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#Partition"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#HumanHand"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#KinovaArm"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/zone/ontologies/2019/11/object_onto#WAMArm"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

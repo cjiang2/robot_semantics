@@ -26,7 +26,7 @@ class InferenceConfig(Config):
     CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
     SETTINGS = ['Evaluation']
-    CHECKPOINT_FILE = os.path.join(CHECKPOINT_PATH, 'saved', 'v2c_epoch_{}.pth'.format(50))
+    CHECKPOINT_FILE = os.path.join(CHECKPOINT_PATH, 'saved', 'v2c_epoch_{}.pth'.format(120))
 
 def init_model(config, 
                vocab,

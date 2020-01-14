@@ -31,7 +31,7 @@ class InferenceConfig(Config):
     SETTINGS = ['Evaluation']
     SAVE_PATH = os.path.join(CHECKPOINT_PATH, 'attention', SETTINGS[0])
     # unknown_water_bottle1_mug5_270_299_att.npy
-    ATT_FILE = 'unknown_beverage_plastic_bottle5_mug5_75_104_att.npy'
+    ATT_FILE = 'unknown_water_bottle1_mug5_270_299_att.npy'
 
 def retrieve_video_info(fname):
     fname = fname.split('_')
