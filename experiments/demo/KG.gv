@@ -1,0 +1,139 @@
+digraph KG {
+	node [shape=box]
+	node [shape=box]
+	ColdWater
+	Cold
+	ColdWater -> Cold [label="hasGenericTemperature, some"]
+	node [shape=box]
+	ColdWater
+	Water
+	ColdWater -> Water [label=subclass_of]
+	node [shape=box]
+	Water
+	ColdWater
+	Water -> ColdWater [label=has_subclass]
+	node [shape=box]
+	PlasticBottle
+	Plastic
+	PlasticBottle -> Plastic [label="hasMaterial, some"]
+	node [shape=box]
+	PlasticBottle
+	Bottle
+	PlasticBottle -> Bottle [label=subclass_of]
+	node [shape=box]
+	PlasticBottle
+	HumanHand
+	PlasticBottle -> HumanHand [label="isGraspableBy, some"]
+	node [shape=box]
+	PlasticBottle
+	KinovaArm
+	PlasticBottle -> KinovaArm [label="isGraspableBy, some"]
+	node [shape=box]
+	PlasticBottle
+	WAMArm
+	PlasticBottle -> WAMArm [label="isGraspableBy, some"]
+	node [shape=box]
+	PlasticBottle
+	OilBottle1
+	PlasticBottle -> OilBottle1 [label=has_individual]
+	node [shape=box]
+	PlasticBottle
+	OilBottle2
+	PlasticBottle -> OilBottle2 [label=has_individual]
+	node [shape=box]
+	PlasticBottle
+	PlasticBottle1
+	PlasticBottle -> PlasticBottle1 [label=has_individual]
+	node [shape=box]
+	PlasticBottle
+	PlasticBottle2
+	PlasticBottle -> PlasticBottle2 [label=has_individual]
+	node [shape=box]
+	PlasticBottle
+	PlasticBottle3
+	PlasticBottle -> PlasticBottle3 [label=has_individual]
+	node [shape=box]
+	PlasticBottle
+	PlasticBottle4
+	PlasticBottle -> PlasticBottle4 [label=has_individual]
+	node [shape=box]
+	Bottle
+	PlasticBottle
+	Bottle -> PlasticBottle [label=has_subclass]
+	node [shape=box]
+	HumanHand
+	PlasticBottle
+	HumanHand -> PlasticBottle [label="canGrasp, some"]
+	node [shape=box]
+	KinovaArm
+	PlasticBottle
+	KinovaArm -> PlasticBottle [label="canGrasp, some"]
+	node [shape=box]
+	WAMArm
+	PlasticBottle
+	WAMArm -> PlasticBottle [label="canGrasp, some"]
+	node [shape=box]
+	CentricMug
+	Centric
+	CentricMug -> Centric [label="hasMaterial, some"]
+	node [shape=box]
+	CentricMug
+	Mug
+	CentricMug -> Mug [label=subclass_of]
+	node [shape=box]
+	CentricMug
+	HumanHand
+	CentricMug -> HumanHand [label="isGraspableBy, some"]
+	node [shape=box]
+	CentricMug
+	KinovaArm
+	CentricMug -> KinovaArm [label="isGraspableBy, some"]
+	node [shape=box]
+	CentricMug
+	WAMArm
+	CentricMug -> WAMArm [label="isGraspableBy, some"]
+	node [shape=box]
+	CentricMug
+	CentricMug1
+	CentricMug -> CentricMug1 [label=has_individual]
+	node [shape=box]
+	CentricMug
+	CentricMug2
+	CentricMug -> CentricMug2 [label=has_individual]
+	node [shape=box]
+	CentricMug
+	CentricMug3
+	CentricMug -> CentricMug3 [label=has_individual]
+	node [shape=box]
+	CentricMug
+	CentricMug4
+	CentricMug -> CentricMug4 [label=has_individual]
+	node [shape=box]
+	Mug
+	CentricMug
+	Mug -> CentricMug [label=has_subclass]
+	node [shape=box]
+	HumanHand
+	CentricMug
+	HumanHand -> CentricMug [label="canGrasp, some"]
+	node [shape=box]
+	KinovaArm
+	CentricMug
+	KinovaArm -> CentricMug [label="canGrasp, some"]
+	node [shape=box]
+	WAMArm
+	CentricMug
+	WAMArm -> CentricMug [label="canGrasp, some"]
+	node [shape=box]
+	HumanHand
+	ColdWater
+	HumanHand -> ColdWater [label=V2C_POUR]
+	node [shape=box]
+	PlasticBottle
+	ColdWater
+	PlasticBottle -> ColdWater [label=V2C_FROM]
+	node [shape=box]
+	ColdWater
+	CentricMug
+	ColdWater -> CentricMug [label=V2C_TO]
+}
