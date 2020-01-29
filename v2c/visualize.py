@@ -4,6 +4,7 @@ Generic functions for visualization purpose.
 """
 import os
 
+import cv2
 import numpy as np
 from PIL import Image
 import matplotlib.cm as cm
@@ -54,3 +55,48 @@ def visualize_region_atts(frames_path,
         plt.set_cmap(cm.Greys_r)
         plt.axis('off')
     plt.show()
+
+def visualize_region_atts_v2(frames_path,
+                             alphas,
+                             smooth=True, 
+                             base_size=7,
+                             upscale=24,
+                             show_plot=True):
+    """Visualizes region attentions given corresponding attention weights and
+    paths to frame.
+    Version 2: Support loading for all frames for a video. Use OpenCV color map for 
+    visualization.
+    """
+    plots = []
+    for t in range(len(frames_path)):
+        frame = cv2.imread(frames_path[t])
+        alpha = alphas[t, :].reshape(7, 7)
+
+        # Resize frame to match alpha size
+        frame = cv2.resize(frame, (base_size*upscale, base_size*upscale))
+
+        # Process alpha into a binary mask
+        alpha = alpha / alpha.max()
+        if smooth:
+            alpha = skimage.transform.pyramid_expand(alpha, upscale=upscale, sigma=8)
+        else:
+            alpha = skimage.transform.resize(alpha, [base_size*upscale, base_size*upscale])
+
+        # Convert to mask, then to heatmap
+        mask = np.uint8(255*alpha)
+        heatmap = cv2.applyColorMap(mask, cv2.COLORMAP_JET)
+
+        # Overlay
+        vis = np.float32(heatmap) + np.float32(frame)
+        vis = vis / np.max(vis)
+
+        plots.append(cv2.cvtColor(vis, cv2.COLOR_BGR2RGB))
+
+    # Show everything
+    if show_plot:
+        for vis in plots:
+            plt.imshow(vis)
+            plt.pause(0.001)
+            plt.clf()
+
+    return plots
