@@ -200,9 +200,6 @@ def process_caption(captions,
                     vocab=None):
     """Helper function to process captions into sequences.
     """
-    # Add start and end tokens
-    captions = ['{} {} {}'.format(config.START_WORD, override_caption(caption), config.END_WORD) for caption in captions]
-
     # Build vocabulary
     if vocab is None:
         vocab = utils.build_vocab(captions, 
@@ -210,21 +207,13 @@ def process_caption(captions,
                                   start_word=config.START_WORD,
                                   end_word=config.END_WORD,
                                   unk_word=config.UNK_WORD)
-    # Reset vocab_size
-    config.VOCAB_SIZE = len(vocab)
-
-    maxlen = utils.get_maxlen(captions)
-    #print('Maximum length:', maxlen)
-    if (config.MAXLEN is None) or (config.MAXLEN < maxlen):
-        config.MAXLEN = maxlen
-    #print('Current Maximum length settings:', config.MAXLEN)
             
     # Process text tokens
     targets = utils.texts_to_sequences(captions, vocab)
     targets = utils.pad_sequences(targets, config.MAXLEN, padding='post')
     targets = targets.astype(np.int64)
 
-    return targets, vocab, config
+    return targets, vocab
 
 def parse_clip_paths_and_captions(config,
                                   vocab=None,
@@ -243,12 +232,26 @@ def parse_clip_paths_and_captions(config,
     else:
         clips = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
 
+    # Parse all present commands
     captions = ['{}'.format(str(np.load(x.replace('_clip', '_caption')))) for x in clips]
+    captions = ['{} {} {}'.format(config.START_WORD, override_caption(caption), config.END_WORD) for caption in captions]
 
     # Sentences to Sequences
-    targets, vocab, config = process_caption(captions, 
-                                             config=config, 
-                                             vocab=vocab)
+    targets, vocab = process_caption(captions, 
+                                     config=config, 
+                                     vocab=vocab)
+
+    # Reset some key parameters inside config
+    # --------------------
+    # Reset vocab_size
+    config.VOCAB_SIZE = len(vocab)
+
+    # Reset maximum length if necessary
+    maxlen = utils.get_maxlen(captions)
+    #print('Maximum length:', maxlen)
+    if (config.MAXLEN is None) or (config.MAXLEN < maxlen):
+        config.MAXLEN = maxlen
+
     return clips, targets, vocab, config
 
 
