@@ -1,18 +1,6 @@
 digraph KG {
 	node [shape=box]
 	node [shape=box]
-	ColdWater
-	Cold
-	ColdWater -> Cold [label="hasGenericTemperature, some"]
-	node [shape=box]
-	ColdWater
-	Water
-	ColdWater -> Water [label=subclass_of]
-	node [shape=box]
-	Water
-	ColdWater
-	Water -> ColdWater [label=has_subclass]
-	node [shape=box]
 	PlasticBottle
 	Plastic
 	PlasticBottle -> Plastic [label="hasMaterial, some"]
@@ -73,6 +61,18 @@ digraph KG {
 	PlasticBottle
 	WAMArm -> PlasticBottle [label="canGrasp, some"]
 	node [shape=box]
+	ColdWater
+	Cold
+	ColdWater -> Cold [label="hasGenericTemperature, some"]
+	node [shape=box]
+	ColdWater
+	Water
+	ColdWater -> Water [label=subclass_of]
+	node [shape=box]
+	Water
+	ColdWater
+	Water -> ColdWater [label=has_subclass]
+	node [shape=box]
 	CentricMug
 	Centric
 	CentricMug -> Centric [label="hasMaterial, some"]
@@ -124,6 +124,18 @@ digraph KG {
 	WAMArm
 	CentricMug
 	WAMArm -> CentricMug [label="canGrasp, some"]
+	node [shape=box]
+	HumanHand
+	none
+	HumanHand -> none [label=V2C_EMPTY_MOVE]
+	node [shape=box]
+	HumanHand
+	PlasticBottle
+	HumanHand -> PlasticBottle [label=V2C_GRASP]
+	node [shape=box]
+	HumanHand
+	PlasticBottle
+	HumanHand -> PlasticBottle [label=V2C_HOLD]
 	node [shape=box]
 	HumanHand
 	ColdWater
