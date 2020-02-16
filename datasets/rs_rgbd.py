@@ -117,6 +117,21 @@ def summary(annotations):
     print('# manipulator captions in total:', num_lefthand + num_righthand)
     print('# static captions in total:', num_static)
 
+def map_video_settings(dataset_path=os.path.join('datasets', 'RS-RGBD'),
+                       folders=['Grasp_Pour', 'WAM_Grasp_Pour']):
+    """Get a dict mapping from videos to settings.
+    eg. streamline_water_bowl1_pot_scene2 -> Grasp_Pour/streamline_water_bowl1_pot_scene2
+    """
+    vname2settings = {}
+    for folder in folders:
+        # Paths
+        folder_path = os.path.join(dataset_path, folder)
+        videos_name = os.listdir(folder_path)
+        for video_name in videos_name:
+            assert vname2settings.get(video_name) == None   # NOTE: MUST Ensure each video has a unique naming
+            vname2settings[video_name] = os.path.join(folder, video_name)
+    return vname2settings
+
 
 # ----------------------------------------
 # Functions for RS-RGBD Manual Feature Extraction
@@ -223,18 +238,24 @@ def parse_clip_paths_and_captions(config,
     Added option to load specified clips for one video if needed.
     """
     # Load paths to caption and clips
-    # TODO: Only accept one folder from the config.SETTINGS
-    feature_path = os.path.join(config.DATASET_PATH, 
-                                list(config.BACKBONE.keys())[0], 
-                                config.SETTINGS[0])
-    if video_name is not None:
-        clips = sorted(glob.glob(os.path.join(feature_path, '{}_*_clip.npy'.format(video_name))))        
-    else:
-        clips = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
+    # NOW: Accept multiple folders in settings.
+    clips = []
+    captions = []
+    for folder in config.SETTINGS:
+        feature_path = os.path.join(config.DATASET_PATH, 
+                                    list(config.BACKBONE.keys())[0], 
+                                    folder)
+        if video_name is not None:
+            clips_folder = sorted(glob.glob(os.path.join(feature_path, '{}_*_clip.npy'.format(video_name))))        
+        else:
+            clips_folder = sorted(glob.glob(os.path.join(feature_path, '*_clip.npy')))
 
-    # Parse all present commands
-    captions = ['{}'.format(str(np.load(x.replace('_clip', '_caption')))) for x in clips]
-    captions = ['{} {} {}'.format(config.START_WORD, override_caption(caption), config.END_WORD) for caption in captions]
+        # Parse all present commands
+        captions_folder = ['{}'.format(str(np.load(x.replace('_clip', '_caption')))) for x in clips_folder]
+        captions_folder = ['{} {} {}'.format(config.START_WORD, override_caption(caption), config.END_WORD) for caption in captions_folder]
+
+        clips += clips_folder
+        captions += captions_folder
 
     # Sentences to Sequences
     targets, vocab = process_caption(captions, 

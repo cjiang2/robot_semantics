@@ -25,7 +25,7 @@ class InferenceConfig(Config):
     ROOT_DIR = ROOT_DIR
     CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
-    SETTINGS = ['Evaluation']
+    SETTINGS = ['Evaluation', 'WAM_Evaluation']
     CHECKPOINT_FILE = os.path.join(CHECKPOINT_PATH, 'saved', 'v2c_epoch_{}.pth'.format(120))
 
 def init_model(config, 
@@ -73,10 +73,14 @@ def main():
                                   shuffle=False, 
                                   num_workers=1)
     
-    # Setup save path
-    SAVE_PATH = os.path.join(config.CHECKPOINT_PATH, 'attention', config.SETTINGS[0])
-    if not os.path.exists(SAVE_PATH):
-        os.makedirs(SAVE_PATH)
+    # Setup all possible save paths
+    for folder in config.SETTINGS:
+        save_path = os.path.join(config.CHECKPOINT_PATH, 'attention', folder)
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+
+    # Get mapping
+    vname2settings = rs_rgbd.map_video_settings(config.DATASET_PATH, config.SETTINGS)
 
     # --------------------
     # Init model
@@ -93,7 +97,7 @@ def main():
             alphas, fname = all_alphas[i], fnames[i]
             video_folder, _ = retrieve_video_info(fname)
 
-            video_path = os.path.join(SAVE_PATH, video_folder)
+            video_path = os.path.join(config.CHECKPOINT_PATH, 'attention', vname2settings[video_folder])
             if not os.path.exists(video_path):
                 os.makedirs(video_path)
             

@@ -30,7 +30,7 @@ class FEConfig(Config):
     WINDOW_SIZE = 30
     STEP = 15
     BACKBONE = {'resnet50': 2048}
-    SETTINGS = ['Grasp_Pour']
+    SETTINGS = ['Grasp_Pour', 'WAM_Grasp_Pour', 'Evaluation', 'WAM_Evaluation']
 
 def extract(dataset_path,
             dataset,
@@ -83,8 +83,12 @@ if __name__ == '__main__':
     config = FEConfig()
     config.display()
 
-    clips, targets = rs_rgbd.generate_clips(config.DATASET_PATH, config.SETTINGS[0], config.WINDOW_SIZE)
-    print('Number of clips:', len(clips), len(targets))
-    clip_dataset = rs_rgbd.Frames2ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
+    for folder in config.SETTINGS:
+        print('-'*30)
+        print('Settings {}...'.format(folder))
+        clips, targets = rs_rgbd.generate_clips(config.DATASET_PATH, folder, config.WINDOW_SIZE)
+        print('Number of clips:', len(clips), len(targets))
+        clip_dataset = rs_rgbd.Frames2ClipDataset(clips, targets, transform=rs_rgbd.transforms_data)
 
-    extract(config.DATASET_PATH, clip_dataset, list(config.BACKBONE.keys())[0], config.SETTINGS[0])
+        extract(config.DATASET_PATH, clip_dataset, list(config.BACKBONE.keys())[0], folder)
+        print('-'*30)

@@ -29,10 +29,8 @@ class InferenceConfig(Config):
     ROOT_DIR = ROOT_DIR
     CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
-    SETTINGS = ['Evaluation']
+    SETTINGS = ['Evaluation', 'WAM_Evaluation']
     VIDEO_NAME = 'unknown_water_bottle1_mug5'
-    SAVE_PATH = os.path.join(CHECKPOINT_PATH, 'attention', SETTINGS[0])
-    ATT_FILE = 'unknown_water_bottle1_mug5_270_299_att.npy'
 
 
 def load_attention_files(atts_path, video_path):
@@ -71,9 +69,11 @@ def main():
     vocab = pickle.load(open(os.path.join(config.CHECKPOINT_PATH, 'vocab.pkl'), 'rb'))
     config.VOCAB_SIZE = len(vocab)
 
+    # Locate the exact setting of the video
+    vname2settings = rs_rgbd.map_video_settings(config.DATASET_PATH, config.SETTINGS)
     # Path to video frames and attention files
-    video_path = os.path.join(config.DATASET_PATH, config.SETTINGS[0], config.VIDEO_NAME, config.VIDEO_NAME)
-    atts_path = os.path.join(config.CHECKPOINT_PATH, 'attention', config.SETTINGS[0], config.VIDEO_NAME)
+    video_path = os.path.join(config.DATASET_PATH, vname2settings[config.VIDEO_NAME], config.VIDEO_NAME)
+    atts_path = os.path.join(config.CHECKPOINT_PATH, 'attention', vname2settings[config.VIDEO_NAME])
 
     # Load attention files and map to every frames
     imgs_path, att_weights = load_attention_files(atts_path, video_path)

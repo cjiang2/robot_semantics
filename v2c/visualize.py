@@ -16,10 +16,10 @@ import graphviz
 # Functions for graphviz visualization
 # ------------------------------------------------------------
 
-def convert_to_graphviz(graph, name='KG'):
+def convert_to_graphviz(graph, name='KG', engine='fdp'):
     """Helper function to convert edge graph into graphviz.Digraph.
     """
-    e = graphviz.Digraph(name)
+    e = graphviz.Digraph(name, engine=engine)
     e.attr('node', shape='box')
     for edge in graph:
         e.attr('node', shape='box')
