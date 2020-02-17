@@ -140,7 +140,7 @@ def map_video_settings(dataset_path=os.path.join('datasets', 'RS-RGBD'),
 def generate_clips(dataset_path,
                    folder,
                    window_size,
-                   annotations_type=['lefthand', 'righthand']):
+                   annotations_type=['lefthand', 'righthand', 'wamarm']):
     """Generate clips for training purposes through simulating video streamline queue.
     """
     def get_full_paths(frames_no,
@@ -179,13 +179,14 @@ def generate_clips(dataset_path,
         # Extract the main annotated manipulator captions, ignore the other manipulator with empty('none') annotations
         main_annotations = []
         for annotation_type in annotations_type:
-            if len(annotations_by_video[annotation_type][0]) > 1:
-                timestamps, captions = annotations_by_video[annotation_type]
-                for i in range(len(timestamps)):
-                    # Get the current segment
-                    timestamp, caption = timestamps[i], captions[i][0]      # NOTE: Choose the first caption (Highest-level action)
-                    print('[{}, {}] {}'.format(timestamp[0], timestamp[-1], caption))
-                    main_annotations.append([timestamp, caption])
+            if annotations_by_video.get(annotation_type) is not None:
+                if len(annotations_by_video[annotation_type][0]) > 1:
+                    timestamps, captions = annotations_by_video[annotation_type]
+                    for i in range(len(timestamps)):
+                        # Get the current segment
+                        timestamp, caption = timestamps[i], captions[i][0]      # NOTE: Choose the first caption (Highest-level action)
+                        print('[{}, {}] {}'.format(timestamp[0], timestamp[-1], caption))
+                        main_annotations.append([timestamp, caption])
 
         # Search for annotation, determined by the last frame_no of the clip
         for i, clip in enumerate(clips):
