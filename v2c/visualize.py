@@ -90,13 +90,17 @@ def visualize_region_atts_v2(frames_path,
         vis = np.float32(heatmap) + np.float32(frame)
         vis = vis / np.max(vis)
 
+        # Scale-up visualization
+        vis = np.uint8(255.*vis)
+
         plots.append(cv2.cvtColor(vis, cv2.COLOR_BGR2RGB))
 
     # Show everything
     if show_plot:
-        for vis in plots:
+        for t, vis in enumerate(plots):
+            cv2.imwrite('save/{}.png'.format(t), cv2.cvtColor(vis, cv2.COLOR_RGB2BGR))
             plt.imshow(vis)
             plt.pause(0.001)
             plt.clf()
-
+            
     return plots
