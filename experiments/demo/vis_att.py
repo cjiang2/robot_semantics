@@ -29,7 +29,7 @@ class InferenceConfig(Config):
     ROOT_DIR = ROOT_DIR
     CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
-    SETTINGS = ['Evaluation', 'WAM_Evaluation']
+    SETTINGS = ['Evaluation', 'WAM_Evaluation', 'WAM_Intention']
     VIDEO_NAME = 'wam_unknown_milk_milkcan2_mug6'
 
 
