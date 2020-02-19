@@ -1,77 +1,57 @@
 digraph KG {
 	node [shape=box]
 	node [shape=box]
-	PlasticBottle
-	Plastic
-	PlasticBottle -> Plastic [label="hasMaterial, some"]
+	MilkCan
+	Milk
+	MilkCan -> Milk [label="hasFoodInsideGeneric, some"]
 	node [shape=box]
-	PlasticBottle
-	Bottle
-	PlasticBottle -> Bottle [label=subclass_of]
+	MilkCan
+	Paper
+	MilkCan -> Paper [label="hasMaterial, some"]
 	node [shape=box]
-	PlasticBottle
+	MilkCan
+	Can
+	MilkCan -> Can [label=subclass_of]
+	node [shape=box]
+	MilkCan
 	HumanHand
-	PlasticBottle -> HumanHand [label="isGraspableBy, some"]
+	MilkCan -> HumanHand [label="isGraspableBy, some"]
 	node [shape=box]
-	PlasticBottle
+	MilkCan
 	KinovaArm
-	PlasticBottle -> KinovaArm [label="isGraspableBy, some"]
+	MilkCan -> KinovaArm [label="isGraspableBy, some"]
 	node [shape=box]
-	PlasticBottle
+	MilkCan
 	WAMArm
-	PlasticBottle -> WAMArm [label="isGraspableBy, some"]
+	MilkCan -> WAMArm [label="isGraspableBy, some"]
 	node [shape=box]
-	PlasticBottle
-	OilBottle1
-	PlasticBottle -> OilBottle1 [label=has_individual]
-	node [shape=box]
-	PlasticBottle
-	OilBottle2
-	PlasticBottle -> OilBottle2 [label=has_individual]
-	node [shape=box]
-	PlasticBottle
-	PlasticBottle1
-	PlasticBottle -> PlasticBottle1 [label=has_individual]
-	node [shape=box]
-	PlasticBottle
-	PlasticBottle2
-	PlasticBottle -> PlasticBottle2 [label=has_individual]
-	node [shape=box]
-	PlasticBottle
-	PlasticBottle3
-	PlasticBottle -> PlasticBottle3 [label=has_individual]
-	node [shape=box]
-	PlasticBottle
-	PlasticBottle4
-	PlasticBottle -> PlasticBottle4 [label=has_individual]
-	node [shape=box]
-	Bottle
-	PlasticBottle
-	Bottle -> PlasticBottle [label=has_subclass]
+	Can
+	MilkCan
+	Can -> MilkCan [label=has_subclass]
 	node [shape=box]
 	HumanHand
-	PlasticBottle
-	HumanHand -> PlasticBottle [label="canGrasp, some"]
+	MilkCan
+	HumanHand -> MilkCan [label="canGrasp, some"]
 	node [shape=box]
 	KinovaArm
-	PlasticBottle
-	KinovaArm -> PlasticBottle [label="canGrasp, some"]
+	MilkCan
+	KinovaArm -> MilkCan [label="canGrasp, some"]
 	node [shape=box]
 	WAMArm
-	PlasticBottle
-	WAMArm -> PlasticBottle [label="canGrasp, some"]
+	MilkCan
+	WAMArm -> MilkCan [label="canGrasp, some"]
 	node [shape=box]
-	ColdWater
+	ColdMilk
 	Cold
-	ColdWater -> Cold [label="hasGenericTemperature, some"]
+	ColdMilk -> Cold [label="hasGenericTemperature, some"]
 	node [shape=box]
-	ColdWater
-	Water
-	ColdWater -> Water [label=subclass_of]
+	ColdMilk
+	Milk
+	ColdMilk -> Milk [label=subclass_of]
 	node [shape=box]
-	Water
-	ColdWater
-	Water -> ColdWater [label=has_subclass]
+	Milk
+	ColdMilk
+	Milk -> ColdMilk [label=has_subclass]
 	node [shape=box]
 	CentricMug
 	Centric
@@ -125,27 +105,23 @@ digraph KG {
 	CentricMug
 	WAMArm -> CentricMug [label="canGrasp, some"]
 	node [shape=box]
-	HumanHand
+	Wamarm
 	none
-	HumanHand -> none [label=V2C_EMPTY_MOVE]
+	Wamarm -> none [label=V2C_EMPTY_MOVE]
 	node [shape=box]
-	HumanHand
-	PlasticBottle
-	HumanHand -> PlasticBottle [label=V2C_GRASP]
+	Wamarm
+	MilkCan
+	Wamarm -> MilkCan [label=V2C_HOLD]
 	node [shape=box]
-	HumanHand
-	PlasticBottle
-	HumanHand -> PlasticBottle [label=V2C_HOLD]
+	Wamarm
+	ColdMilk
+	Wamarm -> ColdMilk [label=V2C_POUR]
 	node [shape=box]
-	HumanHand
-	ColdWater
-	HumanHand -> ColdWater [label=V2C_POUR]
+	MilkCan
+	ColdMilk
+	MilkCan -> ColdMilk [label=V2C_FROM]
 	node [shape=box]
-	PlasticBottle
-	ColdWater
-	PlasticBottle -> ColdWater [label=V2C_FROM]
-	node [shape=box]
-	ColdWater
+	ColdMilk
 	CentricMug
-	ColdWater -> CentricMug [label=V2C_TO]
+	ColdMilk -> CentricMug [label=V2C_TO]
 }

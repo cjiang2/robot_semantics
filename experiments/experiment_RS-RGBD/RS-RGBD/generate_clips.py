@@ -30,7 +30,7 @@ class FEConfig(Config):
     WINDOW_SIZE = 30
     STEP = 15
     BACKBONE = {'resnet50': 2048}
-    SETTINGS = ['WAM_Grasp_Pour', 'Grasp_Pour', 'WAM_Evaluation', 'Evaluation']
+    SETTINGS = ['WAM_Grasp_Pour', 'Grasp_Pour', 'WAM_Evaluation', 'Evaluation', 'Human_Intention', 'WAM_Intention']
 
 def extract(dataset_path,
             dataset,

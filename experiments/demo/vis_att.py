@@ -30,7 +30,7 @@ class InferenceConfig(Config):
     CHECKPOINT_PATH = os.path.join(ROOT_DIR, 'checkpoints')
     DATASET_PATH = os.path.join(ROOT_DIR, 'datasets', 'RS-RGBD')
     SETTINGS = ['Evaluation', 'WAM_Evaluation']
-    VIDEO_NAME = 'unknown_water_bottle1_mug5'
+    VIDEO_NAME = 'wam_unknown_milk_milkcan2_mug6'
 
 
 def load_attention_files(atts_path, video_path):

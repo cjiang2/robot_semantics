@@ -63,7 +63,7 @@ class Config(object):
     DATASET_PATH = os.path.join('datasets') # Override in sub-classes
 
     # All settings to be used
-    SETTINGS = ['Grasp_Pour', 'WAM_Grasp_Pour']
+    SETTINGS = ['Grasp_Pour', 'WAM_Grasp_Pour', 'Human_Intention']
 
     # Maximum command sentence length
     MAXLEN = 15
