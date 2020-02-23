@@ -4,6 +4,7 @@ import sys
 import pickle
 
 import numpy as np
+import datetime
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../../")
@@ -129,8 +130,13 @@ def test():
             max_file = prediction_file
 
     print('Maximum Score with file', max_file)
+    fname = str(datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')) + '.txt'
+    f = open(fname, 'w')
     for i in range(len(max_scores)):
         print('%s: %0.3f' % (METRICS[i], max_scores[i]))
+        f.write('%s: %0.3f\n' % (METRICS[i], max_scores[i]))
+    f.close()
+    
 
 if __name__ == '__main__':
     test()
