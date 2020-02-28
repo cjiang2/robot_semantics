@@ -5,7 +5,7 @@ This is the official implementation decribed in our paper:
 
 <center>
     <figure> 
-        <img src="images/intro.png"/>
+        <img src="images/intro.png"/ width="50%" height="50%">
     </figure>        
 </center>
 
