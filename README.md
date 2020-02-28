@@ -5,7 +5,7 @@ This is the official implementation decribed in our paper:
 
 <center>
     <figure> 
-        <img src="images/result_dkg.jpg"/>
+        <img src="images/intro.jpg"/>
     </figure>        
 </center>
 
