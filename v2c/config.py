@@ -1,3 +1,9 @@
+"""
+Robot Semantics
+Base configuration class.
+Reference from: https://github.com/matterport/Mask_RCNN/blob/master/mrcnn/config.py
+"""
+
 import numpy as np
 import os
 import multiprocessing
