@@ -381,7 +381,8 @@ def _process_instances(entity, graph):
 
     return graph
 
-def generate_knowledge_graph(entity):
+def generate_knowledge_graph(entity, 
+                             show_individuals=False):
     """Helper function to grab entity-relation from onto and 
     return as knowledge graph.
     """
@@ -415,7 +416,8 @@ def generate_knowledge_graph(entity):
             graph = _process_restriction(x, entity, graph)
         
     # Part 4: Look into instances
-    graph = _process_instances(entity, graph)
+    if show_individuals:
+        graph = _process_instances(entity, graph)
     
     # Part 5: Some additional filters
     graph = _populate_subclass_rel(graph)
@@ -533,8 +535,10 @@ def _match_onto(string):
     """Helper: Clean command sentence, match tokens to 
     entity naming inside ontology.
     """
-    if string == 'humanhand':
+    if string.lower() == 'humanhand':
         return 'HumanHand'
+    elif string.lower() == 'wamarm':
+        return 'WAMArm'
     new_string = '' + string[0].upper()
     i = 1
     while i < len(string):

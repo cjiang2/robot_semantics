@@ -60,7 +60,7 @@ def visualize_region_atts_v2(frames_path,
                              alphas,
                              smooth=True, 
                              base_size=7,
-                             upscale=24,
+                             upscale=64,
                              show_plot=True):
     """Visualizes region attentions given corresponding attention weights and
     paths to frame.
