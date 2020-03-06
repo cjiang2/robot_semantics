@@ -1,7 +1,7 @@
 # Robot_Semantics
 This is the official implementation decribed in our paper: 
 
-"[Understanding Contexts Inside Joint Robot and Human Manipulation Tasks through Vision-Language Model with Ontology Constraints in a Video Streamline](?)"
+"[Understanding Contexts Inside Joint Robot and Human Manipulation Tasks through Vision-Language Model with Ontology Constraints in a Video Streamline](https://arxiv.org/abs/2003.01163)"
 
 <center>
     <figure> 
@@ -47,5 +47,10 @@ Please leave me an issue if you find any potential bugs inside the code.
 
 If you find this repository useful, please give me a star and consider citing:
 ```
-BibTeX coming soon.
+@article{jiang2020understanding,
+  title={Understanding Contexts Inside Robot and Human Manipulation Tasks through a Vision-Language Model and Ontology System in a Video Stream},
+  author={Jiang, Chen and Dehghan, Masood and Jagersand, Martin},
+  journal={arXiv preprint arXiv:2003.01163},
+  year={2020}
+}
 ```
