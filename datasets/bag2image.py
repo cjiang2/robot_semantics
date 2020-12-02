@@ -194,7 +194,7 @@ if __name__ == '__main__':
         # Save things here
         pipe, cfg = streaming_from_file(bagfile)
         extract_frames(pipe, cfg, 
-                       resize=args.resize,
+                       resize=args.resize[0],
                        save_path=save_path, 
                        post_processing=args.post_processing,
                        save_colorize=args.save_colorize, 
