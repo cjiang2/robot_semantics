@@ -78,7 +78,7 @@ class BahdanauAttention(nn.Module):
         super(BahdanauAttention, self).__init__()
         self.W = nn.Linear(enc_units, hidden_units, bias=bias)
         self.U = nn.Linear(enc_units, hidden_units, bias=bias)
-        self.V = nn.Linear(enc_units, 1, bias=bias)
+        self.V = nn.Linear(hidden_units, 1, bias=bias)
         self.reset_parameters()
         
     def forward(self, 
@@ -112,35 +112,49 @@ class VideoEncoder(nn.Module):
                  units):
         super(VideoEncoder, self).__init__()
         self.units = units
-        self.linear = nn.Linear(in_size, units)
-
+        self.proj = nn.Conv2d(in_size, units, (1, 1))
         self.lstm_cell = nn.LSTMCell(units, units)
-
         self.attention = BahdanauAttention(units, units, bias=False)
 
         self.reset_parameters()
 
-    def forward(self, 
+    def forward(self,
                 Xv):
         # Encode video features with one dense layer and lstm
         # State of this lstm to be used for lstm2 language generator
-        # Xv: (batch_size, num_clips, h*w, in_size)
-        Xv = self.linear(Xv)
-        Xv = F.relu(Xv)
+        # Xv: (batch_size, num_clips, in_size, h, w)
 
         # Encode video feature using LSTM
-        # Initialize LSTM state using 1st frame feature from clip
         alphas = []
         (hi, ci) = self.init_hidden(Xv.shape[0], Xv.device)
         for timestep in range(Xv.shape[1]):
-            # Calculate frame-level attention feature
-            context_vec, alpha = self.attention(Xv[:,timestep,:,:], hi)
+            x = Xv[:,timestep,:,:,:]
+            hi, ci, alpha = self.step(x, hi, ci)
             alphas.append(alpha)
 
-            # Encode context vector using LSTM
-            hi, ci = self.lstm_cell(context_vec, (hi, ci))
+        # Stack everything
+        alphas = torch.stack(alphas, dim=1)
 
-        return hi, (hi, ci), torch.stack(alphas, dim=1)
+        return hi, (hi, ci), alphas
+
+    def step(self, 
+             x, 
+             hi,
+             ci):
+        # Use 1x1 Conv for Projection
+        x = F.relu(self.proj(x))
+
+        # Reshape for attn and lstm
+        x = x.permute(0, 2, 3, 1)
+        x = x.view(x.size(0), x.size(1)*x.size(2), x.size(3))
+
+        # Calculate frame-level attention feature
+        context_vec, alpha = self.attention(x, hi)
+
+        # Encode context vector using LSTM
+        hi, ci = self.lstm_cell(context_vec, (hi, ci))
+
+        return hi, ci, alpha
 
     def reset_parameters(self):
         for n, p in self.named_parameters():
@@ -176,7 +190,7 @@ class CommandDecoder(nn.Module):
         self.embed_dim = embed_dim
 
         self.embed = nn.Embedding(vocab_size, embed_dim)
-        self.lstm_cell = nn.LSTMCell(embed_dim + units, units)
+        self.lstm_cell = nn.LSTMCell(embed_dim, units)
         self.logits = nn.Linear(units, vocab_size, bias=True)
         self.softmax = nn.LogSoftmax(dim=1)
         self.reset_parameters(bias_vector)
@@ -189,9 +203,8 @@ class CommandDecoder(nn.Module):
         # Given the previous word token, generate next caption word using lstm2
         # Sequence processing and generating
         Xs = self.embed(Xs)
-        x = torch.cat((Xv, Xs), dim=-1)
 
-        hi, ci = self.lstm_cell(x, states)
+        hi, ci = self.lstm_cell(Xs, states)
 
         x = self.logits(hi)
         x = self.softmax(x)
@@ -379,9 +392,9 @@ class Video2Command():
         # Save the current checkpoint
         torch.save({
                     'VideoEncoder_state_dict': self.video_encoder.state_dict(),
-                    'CommandDecoder_state_dict': self.command_decoder.state_dict(),
+                    'LangDecoder_state_dict': self.lang_decoder.state_dict(),
                     'optimizer_state_dict': self.optimizer.state_dict(),
-                    }, os.path.join(self.config.CHECKPOINT_PATH, 'saved', 'v2c_epoch_{}.pth'.format(epoch)))
+                    }, os.path.join(self.config.CHECKPOINT_PATH, 'saved', 'v2l_epoch_{}.pth'.format(epoch)))
         print('Model saved.')
 
     def load_weights(self,
@@ -391,6 +404,6 @@ class Video2Command():
         print('Loading...')
         checkpoint = torch.load(save_path, map_location=self.device)
         self.video_encoder.load_state_dict(checkpoint['VideoEncoder_state_dict'])
-        self.command_decoder.load_state_dict(checkpoint['CommandDecoder_state_dict'])
+        self.lang_decoder.load_state_dict(checkpoint['LangDecoder_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         print('Model loaded.')

@@ -49,10 +49,10 @@ class Config(object):
     BACKBONE = {'resnet50': 2048}
 
     # Unit size for LSTM, Dense
-    UNITS = 512
+    UNITS = 256
 
     # Embedding size
-    EMBED_SIZE = 512
+    EMBED_SIZE = 300
 
     # Size for Vocabulary
     VOCAB_SIZE = None
