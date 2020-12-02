@@ -23,7 +23,7 @@ This is the official implementation decribed in our paper:
 
 ## Experiments
 To repeat the experiments on our Robot Semantics Dataset:
-1. Clone the repository. This is the branch for `seq2seq-concat-att`.
+1. Clone the repository. This is the branch for `att-seq2seq`.
 
 2. Download the [Robot Semantics Dataset](https://github.com/zonetrooper32/robot_semantics/wiki/Robot-Semantics-Dataset), check our wiki page for more details. Please extract the dataset and setup the directory path as `datasets/RS-RGBD`.
 
@@ -37,7 +37,7 @@ To repeat the experiments on IIT-V2C Dataset, follow up the instructions in my o
 
 
 ## Demo
-We offer a pretrained model with our attention-seq2seq, download it [here]() and put it inside path: `robot_semantics/checkpoints/saved`.
+We offer a pretrained model with our attention-seq2seq, download it [here](https://drive.google.com/file/d/1hqUoxZf9hNnbdj21rK8jQaDNNz0qogHD/view?usp=sharing) and put it inside path: `robot_semantics/checkpoints/saved`. 
 
 Two files are provided for demo: (1) A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/disc-v2c_with_KG-region_att/experiments/demo/kg_demo_fast.ipynb) to visualize the knowledge graph given outputs from the Vision-Language model. (2) `vis_att.py` to visualize all attention maps generated for a single video from the Robot Semantics Dataset. All files are under `robot_semantics/experiments/demo`.
 
