@@ -9,6 +9,8 @@ This is the official implementation decribed in our paper:
     </figure>        
 </center>
 
+**Update (2020-12-19)**: We have uploaded and updated annotations for a complete release of our RS-RGBD dataset! Access the [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Robot-Semantics-Dataset) to check out more. Updated evaluation scores and pre-trained models will be updated in future.
+
 
 ## Requirements
 - PyTorch (tested on 1.4)
@@ -37,7 +39,7 @@ To repeat the experiments on IIT-V2C Dataset, follow up the instructions in my o
 
 
 ## Demo
-We offer a pretrained model with our attention-seq2seq, download it [here](https://drive.google.com/file/d/1hqUoxZf9hNnbdj21rK8jQaDNNz0qogHD/view?usp=sharing) and put it inside path: `robot_semantics/checkpoints/saved`. 
+We offer a pretrained model with our attention-seq2seq, download it [here](NEED UPDATES) and put it inside path: `robot_semantics/checkpoints/saved`. 
 
 Two files are provided for demo: (1) A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/disc-v2c_with_KG-region_att/experiments/demo/kg_demo_fast.ipynb) to visualize the knowledge graph given outputs from the Vision-Language model. (2) `vis_att.py` to visualize all attention maps generated for a single video from the Robot Semantics Dataset. All files are under `robot_semantics/experiments/demo`.
 
