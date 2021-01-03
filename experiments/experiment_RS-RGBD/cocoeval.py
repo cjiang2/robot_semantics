@@ -2,6 +2,7 @@ import os
 import glob
 import sys
 import pickle
+import shutil
 
 import numpy as np
 import datetime
@@ -9,7 +10,7 @@ import datetime
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../../")
 
-# Import v2c utils
+# Import rs utils
 sys.path.append(ROOT_DIR)  # To find local version of the library
 
 # Import python3 coco-caption
@@ -21,6 +22,8 @@ from pycocoevalcap.tokenizer.ptbtokenizer import PTBTokenizer
 
 # All used metrics
 METRICS = ["Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4", "METEOR", "ROUGE_L", "CIDEr"]
+NUM_EPOCHS = 50
+SAVE_EVERY = 1
 
 # From COCOEval code
 class COCOScorer(object):
@@ -115,27 +118,38 @@ def read_prediction_file(prediction_file):
 def test():
     """Helper function to test on any dataset.
     """
-    # Get all generated predicted files
-    prediction_files = sorted(glob.glob(os.path.join(ROOT_DIR, 'checkpoints', 'prediction', '*.txt')))
-    
     scorer = COCOScorer()
     max_scores = np.zeros((len(METRICS), ), dtype=np.float32)
-    max_file = None
-    for prediction_file in prediction_files:
+    max_pred_file = None
+    max_model_file = None
+    for i in range(1, NUM_EPOCHS, SAVE_EVERY):
+        prediction_file = os.path.join(ROOT_DIR, 'checkpoints', 'prediction', '{}_prediction.txt'.format(i))
+        print('-'*30)
+        print('Evaluating file:', prediction_file)
         gts_dict, pds_dict = read_prediction_file(prediction_file)
         ids = list(gts_dict.keys())
         scorer.score(gts_dict, pds_dict, ids, prediction_file)
-        if np.sum(scorer.final_results) > np.sum(max_scores):
+        if np.sum(scorer.final_results) >= np.sum(max_scores):
             max_scores = scorer.final_results
-            max_file = prediction_file
+            max_pred_file = '{}_prediction.txt'.format(i)
+            max_model_file = 'v2l_epoch_{}.pth'.format(i)
 
-    print('Maximum Score with file', max_file)
-    fname = str(datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')) + '.txt'
-    f = open(fname, 'w')
+    print('Maximum Score with file', max_model_file)
+    
+    time_str = str(datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
+    dir_path = os.path.join(ROOT_DIR, 'results_RS-RGBD', time_str)
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
+    f = open(os.path.join(dir_path, 'metric_result.txt'), 'w')
     for i in range(len(max_scores)):
         print('%s: %0.3f' % (METRICS[i], max_scores[i]))
         f.write('%s: %0.3f\n' % (METRICS[i], max_scores[i]))
     f.close()
+    shutil.move(os.path.join(ROOT_DIR, 'checkpoints', 'saved', max_model_file), 
+                os.path.join(dir_path, max_model_file))
+    shutil.move(os.path.join(ROOT_DIR, 'checkpoints', 'prediction', max_pred_file), 
+                os.path.join(dir_path, max_pred_file))
     
 
 if __name__ == '__main__':

@@ -1,24 +1,21 @@
 """
-Robot Semantics
-Generic utils for Vision-Language processing and knowledge modeling.
+RS Concepts
+Utility variables, functions and classes.
 """
-import os
-import re
-import difflib
+
 import sys
+import os
+import glob
+import math
 from collections import Counter
-import operator
-if sys.version_info < (3,):
-    maketrans = string.maketrans
-else:
-    maketrans = str.maketrans
+maketrans = str.maketrans
 
 import numpy as np
 import owlready2 as owl
 
-# ------------------------------------------------------------
-# Functions for NLP, vocabulary, word tokens processing
-# ------------------------------------------------------------
+# ------------------------------
+# Vocabulary and Text Processing
+# ------------------------------
 
 class Vocabulary(object):
     """Simple vocabulary wrapper.
@@ -39,45 +36,76 @@ class Vocabulary(object):
         self.unk_word = unk_word
         for special_token in [start_word, end_word, unk_word]:
             if special_token is not None:
-                self.add_word(special_token)
+                self.add_word(special_token, freq=0)
 
-    def __call__(self, 
-                 word):
+    def word_to_idx(self, 
+                    word):
+        """Return the integer word index of a word token.
+        """
         if not word in self.word2idx:
             if self.unk_word is None:
                 return None   # Return None if no unknown word's defined
             else:
                 return self.word2idx[self.unk_word]
-        return self.word2idx[word]
+        else:
+            return self.word2idx[word]
+
+    def idx_to_word(self, 
+                    idx):
+        """Return the word string of an integer word index.
+        """
+        if idx >= len(self.idx2word):
+            if self.unk_word is None:
+                return None
+            else:
+                return self.unk_word
+        else:
+            return self.idx2word[idx]
 
     def __len__(self):
+        """Return the length of the vocabulary.
+        """
         return len(self.word2idx)
+    
+    def get_vocab(self):
+        """Get all words in the vocabulary.
+        """
+        # Safely extract the word vocab in order using idx
+        words = []
+        for i in range(self.idx):
+            words.append(self.idx2word[i])
+        return words
 
     def add_word(self, 
                  word, 
                  freq=None):
-        """Add individual word to vocabulary.
+        """Add individual word to the vocabulary.
         """
         if not word in self.word2idx and word is not None:
             self.word2idx[word] = self.idx
             self.idx2word[self.idx] = word
             self.idx += 1
+
+        # Populate word frequency count as well
         if freq is not None:
             self.word_counts[word] = freq
         else:
-            self.word_counts[word] = 1
+            try:
+                self.word_counts[word] += 1
+            except:
+                self.word_counts[word] = 1
 
-    def get_bias_vector(self):
+    def get_bias_vec(self):
         """Calculate bias vector from word frequency distribution.
         NOTE: Frequency need to be properly stored.
         From NeuralTalk.
         """
-        words = sorted(self.word2idx.keys())
-        bias_vector = np.array([1.0*self.word_counts[word] for word in words])
-        bias_vector /= np.sum(bias_vector) # Normalize to frequencies
-        bias_vector = np.log(bias_vector)
-        bias_vector -= np.max(bias_vector) # Shift to nice numeric range
-        return bias_vector
+        words = self.get_vocab()    # Make sure bias_vec is aligned with word indices
+        bias_vec = np.array([1.0*self.word_counts[word] for word in words])
+        bias_vec /= np.sum(bias_vec) # Normalize to frequencies
+        bias_vec = np.log(bias_vec + 1e-16) # Add a small offset
+        bias_vec -= np.max(bias_vec) # Shift to nice numeric range
+        return bias_vec
 
 def build_vocab(texts, 
                 frequency=None, 
@@ -87,7 +115,7 @@ def build_vocab(texts,
                 start_word='<sos>',
                 end_word='<eos>',
                 unk_word=None):
-    """Build vocabulary over texts/captions from training set.
+    """Build vocabulary over a set of texts.
     """
     # Load annotations
     counter = Counter()
@@ -96,8 +124,7 @@ def build_vocab(texts,
         #print(tokens)
         counter.update(tokens)
         if (i+1) % 5000 == 0:
-            print('{} captions tokenized...'.format(i+1))
-    print('Done.')
+            print('{} texts tokenized...'.format(i+1))
 
     # Filter out words lower than the defined frequency
     if frequency is not None:
@@ -113,6 +140,7 @@ def build_vocab(texts,
     words = sorted(counter.keys())
     for word in words:
         vocab.add_word(word, counter[word])
+    print('Vocabulary ready.')
     return vocab
 
 def get_maxlen(texts):
@@ -124,7 +152,7 @@ def word_tokenize(text,
                   filters='!"#$%&()*+.,-/:;=?@[\]^`{|}~ ',
                   lower=True, 
                   split=" "):
-    """Converts a text to a sequence of words (or tokens).
+    """Convert a text to a sequence of words (or tokens).
     """
     if lower:
         text = text.lower()
@@ -142,7 +170,7 @@ def text_to_sequence(text,
     tokens = word_tokenize(text, filters, lower, split)
     seq = []
     for token in tokens:
-        word_index = vocab(token)
+        word_index = vocab.word_to_idx(token)
         if word_index is not None:  # Filter out unknown words
             seq.extend([word_index])
     return seq
@@ -155,7 +183,8 @@ def sequence_to_text(seq,
     """
     tokens = []
     for idx in seq:
-        tokens.append(vocab.idx2word.get(idx))
+        token = vocab.idx_to_word(idx)
+        tokens.append(token)
     if filter_specials:
         tokens =  filter_tokens(tokens, specials)
     return ' '.join(tokens)
@@ -170,7 +199,7 @@ def texts_to_sequences(texts,
     seqs = []
     for text in texts:
         seqs.append(text_to_sequence(text, vocab, filters, lower, split))
-    return np.array(seqs)
+    return np.array(seqs, dtype='object')
 
 def filter_tokens(tokens, 
                   specials=['<pad>', '<sos>', '<eos>']):
@@ -234,11 +263,12 @@ def pad_sequences(sequences, maxlen=None, dtype='int32',
 
 
 # ------------------------------------------------------------
-# Functions for streamline video ops
+# Streamline Video Ops
 # ------------------------------------------------------------
 
-class StreamlineVideoQueue(object):
-    """Wrapper to hold images coming from a video feed.
+class StreamSimple(object):
+    """Class to hold and pop a stream of images
+    coming from a video feed.
     """
     def __init__(self,
                  window_size,
@@ -257,8 +287,8 @@ class StreamlineVideoQueue(object):
         self.num_frames = 0
         self.num_queued = 0
 
-    def update(self, 
-               frame):
+    def add_frame(self, 
+                  frame):
         """Add new frame into the queue. Oldest frame is removed if exceeding.
         """
         self.queue.append(frame)
@@ -268,8 +298,8 @@ class StreamlineVideoQueue(object):
             self.queue.pop(0)
             self.num_queued += 1
 
-    def retrieve_clip(self, 
-                      forced_retrieve=False):
+    def get_clip(self, 
+                 forced_retrieve=False):
         """Retrieve a single video clip unit.
         """
         # Force to retrieve a clip if necessary
@@ -285,9 +315,82 @@ class StreamlineVideoQueue(object):
             # 2: Every time the number of incoming new frames gets to the maximum of frames needed(defined by retrieval_limit)
             if self.num_queued % self.retrieval_limit == 0:
                 return self.queue.copy()
+        return None
 
     def __len__(self):
         return len(self.queue)
+    
+
+# ------------------------------
+# Training/Evaluation Relevant Functions
+# ------------------------------
+
+def process_targets(targets,
+                   vocab,
+                   config):
+    """Helper function to process target texts into sequences.
+    """ 
+    # Process text tokens
+    targets = texts_to_sequences(targets, vocab)
+    targets = pad_sequences(targets, config.MAXLEN, padding='post')
+    targets = targets.astype(np.int64)
+    return targets
+
+def prepare_data(config,
+                 vocab=None):
+    """Helper function to prepare training/evaluating.
+    Parse paths to clips, load and process targets, and return
+    (clip, target) pairs.
+    config: Configuration class.
+    vocab: Vocabulary class.
+    """
+    clips_fpath = []
+    targets = []
+
+    fpath = os.path.join(config.CHECKPOINT_PATH, config.MODE)
+    clips_fpath = sorted(glob.glob(os.path.join(fpath, '*_clip.npy')))
+
+    # --------------------
+    # Now parse all targets safely
+    targets_fpath = [x.replace('_clip', '_target') for x in clips_fpath]
+    targets = []
+    for target_fpath in targets_fpath:
+        target = str(np.load(target_fpath))
+        # Pad start_word and/or end_word
+        if config.START_WORD is not None:
+            target = '{} {}'.format(config.START_WORD, target)
+        if config.END_WORD is not None:
+            target = '{} {}'.format(target, config.END_WORD)
+        targets.append(target)
+
+    # --------------------
+    # Build vocabulary now if needed
+    if vocab is None:
+        vocab = build_vocab(targets, 
+                            frequency=config.FREQUENCY,
+                            start_word=config.START_WORD,
+                            end_word=config.END_WORD,
+                            unk_word=config.UNK_WORD)
+
+    # --------------------
+    # Reset some key parameters inside config before going further
+    # Reset vocab_size
+    config.VOCAB_SIZE = len(vocab)
+    print('Vocabulary Size:', len(vocab))
+
+    # Reset maximum length if necessary
+    maxlen = get_maxlen(targets)
+    print('Maximum length:', maxlen)
+    if (config.MAXLEN is None) or (config.MAXLEN < maxlen):
+        config.MAXLEN = maxlen
+
+    # --------------------
+    # Target texts to Sequences
+    targets = process_targets(targets, 
+                             config=config, 
+                             vocab=vocab)    
+
+    return clips_fpath, targets, vocab, config
 
 
 # ------------------------------------------------------------
@@ -519,7 +622,7 @@ def sentence_to_graph(sentence,
         if tag is not None:
             if tag == 'ACT_NOREL':
                 edge = (tokens_new[i-1], 'V2C_'+tokens[i].upper(), 'none')
-            elif tag == 'ACT':
+            elif tag in ['ACT', 'WITH']:
                 edge = (tokens_new[i-1], 'V2C_'+tokens[i].upper(), tokens_new[i+1])
             elif tag == 'FROM':
                 edge = (tokens_new[i+1], 'V2C_'+tokens[i].upper(), tokens_new[i-1])
@@ -535,10 +638,6 @@ def _match_onto(string):
     """Helper: Clean command sentence, match tokens to 
     entity naming inside ontology.
     """
-    if string.lower() == 'humanhand':
-        return 'HumanHand'
-    elif string.lower() == 'wamarm':
-        return 'WAMArm'
     new_string = '' + string[0].upper()
     i = 1
     while i < len(string):
