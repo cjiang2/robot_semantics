@@ -27,13 +27,27 @@ This is the official implementation decribed in our paper:
 To repeat the experiments on our Robot Semantics Dataset:
 1. Clone the repository. This is the branch for `att-seq2seq`.
 
-2. Download the [Robot Semantics Dataset](https://github.com/zonetrooper32/robot_semantics/wiki/Robot-Semantics-Dataset), check our wiki page for more details. Please extract the dataset and setup the directory path as `datasets/RS-RGBD`.
+2. Download the [Robot Semantics Dataset](https://github.com/zonetrooper32/robot_semantics/wiki/Robot-Semantics-Dataset), check our wiki page for more details. Please extract the dataset and setup the directory path as `datasets/RS-RGBD`:
+```
+├── root_dir
+|   ├── data
+|   |   ├── RS-RGBD
+|   |   |   ├── human_grasp_pour
+|   |   |   ├── human_point_and_intend
+|   |   |   ├── wam_grasp_pour
+|   |   |   ├── wam_point_and_intend
+|   |   |   ├── eval_human_grasp_pour
+|   |   |   ├── eval_wam_grasp_pour
+|   |   |   ├── eval_wam_grasp_pour_complex
+```
 
-3. Select a branch to repreat the experiment (Please check our paper for detailed experiment settings). Under the folder `experiment_RS-RGBD/RS-RGBD`, run `generate_clips.py` to sample offline dataset videos into clips for training and evaluation.
+3. To extract features from pre-trained CNNs, under the folder `experiment_RS-RGBD/offline_feat`, run `extract_features.py` to sample offline dataset videos into clips for training and evaluation.
 
-4. To begin training, run `train.py`. Modify `v2c/config.py` accordingly to adjust the hyperparameters.
+4. Select a branch to repreat the experiment (Please check our paper for detailed experiment settings). Under the folder `experiment_RS-RGBD/offline_feat`, run `generate_clips.py` to sample offline dataset videos into clips for training and evaluation.
 
-5. For evaluation, firstly run `evaluate.py` to generate predictions given all saved checkpoints. Run `cocoeval.py` to calculate scores for the predictions. `save_att.py` saves all attention maps for visualization demos.
+5. To begin training, run `train.py`. Modify `rs/config.py` accordingly to adjust the hyperparameters.
+
+6. For evaluation, firstly run `evaluate.py` to generate predictions given all saved checkpoints. Run `cocoeval.py` to calculate scores for the predictions. Best scoring model will be moved to `root_dir/results_RS-RGBD/`.
 
 To repeat the experiments on IIT-V2C Dataset, follow up the instructions in my other [repository](https://github.com/zonetrooper32/video2command). 
 
@@ -41,7 +55,7 @@ To repeat the experiments on IIT-V2C Dataset, follow up the instructions in my o
 ## Demo
 We offer a pretrained model with our attention-seq2seq, download it [here](NEED UPDATES) and put it inside path: `robot_semantics/checkpoints/saved`. 
 
-Two files are provided for demo: (1) A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/disc-v2c_with_KG-region_att/experiments/demo/kg_demo_fast.ipynb) to visualize the knowledge graph given outputs from the Vision-Language model. (2) `vis_att.py` to visualize all attention maps generated for a single video from the Robot Semantics Dataset. All files are under `robot_semantics/experiments/demo`.
+A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/main/experiments/demo/kg_demo_fast.ipynb) to visualize attentions and the knowledge graph given outputs from the Vision-Language model. File is under `robot_semantics/experiments/demo`.
 
 
 ## Additional Note
