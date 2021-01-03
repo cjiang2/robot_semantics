@@ -7,6 +7,7 @@ import sys
 import random
 import colorsys
 
+import graphviz
 import cv2
 import skimage.transform
 import networkx as nx

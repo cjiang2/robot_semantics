@@ -6,6 +6,7 @@ Utility variables, functions and classes.
 import sys
 import os
 import glob
+import difflib
 import math
 from collections import Counter
 maketrans = str.maketrans

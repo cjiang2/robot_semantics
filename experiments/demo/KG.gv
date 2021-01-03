@@ -1,127 +1,47 @@
 digraph KG {
 	node [shape=box]
 	node [shape=box]
-	MilkCan
-	Milk
-	MilkCan -> Milk [label="hasFoodInsideGeneric, some"]
+	PlasticBottle
+	Plastic
+	PlasticBottle -> Plastic [label="hasMaterial, some"]
 	node [shape=box]
-	MilkCan
-	Paper
-	MilkCan -> Paper [label="hasMaterial, some"]
+	PlasticBottle
+	Bottle
+	PlasticBottle -> Bottle [label=subclass_of]
 	node [shape=box]
-	MilkCan
-	Can
-	MilkCan -> Can [label=subclass_of]
-	node [shape=box]
-	MilkCan
+	PlasticBottle
 	HumanHand
-	MilkCan -> HumanHand [label="isGraspableBy, some"]
+	PlasticBottle -> HumanHand [label="isGraspableBy, some"]
 	node [shape=box]
-	MilkCan
+	PlasticBottle
 	KinovaArm
-	MilkCan -> KinovaArm [label="isGraspableBy, some"]
+	PlasticBottle -> KinovaArm [label="isGraspableBy, some"]
 	node [shape=box]
-	MilkCan
+	PlasticBottle
 	WAMArm
-	MilkCan -> WAMArm [label="isGraspableBy, some"]
+	PlasticBottle -> WAMArm [label="isGraspableBy, some"]
 	node [shape=box]
-	Can
-	MilkCan
-	Can -> MilkCan [label=has_subclass]
+	Bottle
+	PlasticBottle
+	Bottle -> PlasticBottle [label=has_subclass]
 	node [shape=box]
 	HumanHand
-	MilkCan
-	HumanHand -> MilkCan [label="canGrasp, some"]
+	PlasticBottle
+	HumanHand -> PlasticBottle [label="canGrasp, some"]
 	node [shape=box]
 	KinovaArm
-	MilkCan
-	KinovaArm -> MilkCan [label="canGrasp, some"]
+	PlasticBottle
+	KinovaArm -> PlasticBottle [label="canGrasp, some"]
 	node [shape=box]
 	WAMArm
-	MilkCan
-	WAMArm -> MilkCan [label="canGrasp, some"]
+	PlasticBottle
+	WAMArm -> PlasticBottle [label="canGrasp, some"]
 	node [shape=box]
-	ColdMilk
-	Cold
-	ColdMilk -> Cold [label="hasGenericTemperature, some"]
+	Wam
+	PlasticBottle
+	Wam -> PlasticBottle [label=V2C_HOLD]
 	node [shape=box]
-	ColdMilk
-	Milk
-	ColdMilk -> Milk [label=subclass_of]
-	node [shape=box]
-	Milk
-	ColdMilk
-	Milk -> ColdMilk [label=has_subclass]
-	node [shape=box]
-	CentricMug
-	Centric
-	CentricMug -> Centric [label="hasMaterial, some"]
-	node [shape=box]
-	CentricMug
-	Mug
-	CentricMug -> Mug [label=subclass_of]
-	node [shape=box]
-	CentricMug
-	HumanHand
-	CentricMug -> HumanHand [label="isGraspableBy, some"]
-	node [shape=box]
-	CentricMug
-	KinovaArm
-	CentricMug -> KinovaArm [label="isGraspableBy, some"]
-	node [shape=box]
-	CentricMug
-	WAMArm
-	CentricMug -> WAMArm [label="isGraspableBy, some"]
-	node [shape=box]
-	CentricMug
-	CentricMug1
-	CentricMug -> CentricMug1 [label=has_individual]
-	node [shape=box]
-	CentricMug
-	CentricMug2
-	CentricMug -> CentricMug2 [label=has_individual]
-	node [shape=box]
-	CentricMug
-	CentricMug3
-	CentricMug -> CentricMug3 [label=has_individual]
-	node [shape=box]
-	CentricMug
-	CentricMug4
-	CentricMug -> CentricMug4 [label=has_individual]
-	node [shape=box]
-	Mug
-	CentricMug
-	Mug -> CentricMug [label=has_subclass]
-	node [shape=box]
-	HumanHand
-	CentricMug
-	HumanHand -> CentricMug [label="canGrasp, some"]
-	node [shape=box]
-	KinovaArm
-	CentricMug
-	KinovaArm -> CentricMug [label="canGrasp, some"]
-	node [shape=box]
-	WAMArm
-	CentricMug
-	WAMArm -> CentricMug [label="canGrasp, some"]
-	node [shape=box]
-	Wamarm
-	none
-	Wamarm -> none [label=V2C_EMPTY_MOVE]
-	node [shape=box]
-	Wamarm
-	MilkCan
-	Wamarm -> MilkCan [label=V2C_HOLD]
-	node [shape=box]
-	Wamarm
-	ColdMilk
-	Wamarm -> ColdMilk [label=V2C_POUR]
-	node [shape=box]
-	MilkCan
-	ColdMilk
-	MilkCan -> ColdMilk [label=V2C_FROM]
-	node [shape=box]
-	ColdMilk
-	CentricMug
-	ColdMilk -> CentricMug [label=V2C_TO]
+	PlasticBottle
+	Water
+	PlasticBottle -> Water [label=V2C_WITH]
 }
