@@ -9,6 +9,8 @@ This is the official implementation decribed in our paper:
     </figure>        
 </center>
 
+**Update (2021-1-3)**: Major codebase updates. This repo should work smoothly now.
+
 **Update (2020-12-19)**: We have uploaded and updated annotations for a complete release of our RS-RGBD dataset! Access the [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Robot-Semantics-Dataset) to check out more. Updated evaluation scores and pre-trained models will be updated in future.
 
 
