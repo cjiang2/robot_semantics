@@ -79,10 +79,10 @@ A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/main/
 Some demos for visual attentions from our vision-language model:
 
 <p align="center">
-  <img src="images/attn_demo/wam_demo1.gif" width="224">
-  <img src="images/attn_demo/wam_demo2.gif" width="224">
-  <img src="images/attn_demo/human_demo1.gif" width="224">
-  <img src="images/attn_demo/human_demo2.gif" width="224">
+  <img src="images/attn_demo/wam_demo1.gif" width="180">
+  <img src="images/attn_demo/wam_demo2.gif" width="180">
+  <img src="images/attn_demo/human_demo1.gif" width="180">
+  <img src="images/attn_demo/human_demo2.gif" width="180">
 </p>
 
 
