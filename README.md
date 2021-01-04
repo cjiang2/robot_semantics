@@ -76,6 +76,15 @@ The model is trained for 50 epochs without much efforts in finetuning or hyperpa
 
 A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/main/experiments/demo/kg_demo_fast.ipynb) to visualize attentions and the knowledge graph given outputs from the Vision-Language model. File is under `robot_semantics/experiments/demo`.
 
+Some demos for visual attentions from our vision-language model:
+
+<p align="center">
+  <img src="images/attn_demo/wam_demo1.gif" width="224">
+  <img src="images/attn_demo/wam_demo2.gif" width="224">
+  <img src="images/attn_demo/human_demo1.gif" width="224">
+  <img src="images/attn_demo/human_demo2.gif" width="224">
+</p>
+
 
 ## Additional Note
 Please leave me an issue if you find any potential bugs inside the code.
