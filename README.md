@@ -9,8 +9,6 @@ This is the official implementation decribed in our paper:
     </figure>        
 </center>
 
-**Update (2021-1-4)**: A pretrained model is updated as baseline for this repo.
-
 **Update (2021-1-3)**: Major codebase updates. This repo should work smoothly now.
 
 **Update (2020-12-19)**: We have uploaded and updated annotations for a complete release of our RS-RGBD dataset! Access the [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Robot-Semantics-Dataset) to check out more. Updated evaluation scores and pre-trained models will be updated in future.
@@ -57,7 +55,7 @@ To repeat the experiments on IIT-V2C Dataset, follow up the instructions in my o
 
 
 ## Demo
-We offer a pretrained model with our attention vision-language model, download it [here](https://drive.google.com/file/d/1DLTk5S29tK7tp6hcKyU8GA5rVYVIDap7/view?usp=sharing) and put it inside path: `robot_semantics/checkpoints/`:
+We offer a pretrained model with our attention vision-language model, download it [here]() and put it inside path: `robot_semantics/checkpoints/`:
 ```
 ├── root_dir
 |   ├── checkpoint
@@ -70,7 +68,7 @@ The metric scores for the offered pretrained model is:
 
 | BLEU-1 | BLEU-2 | BLEU-3 | BLEU-4 | METEOR | ROUGE_L | CIDEr |
 |:------:|:------:|:------:|:------:|:------:|:-------:|:-----:|
-| 0.810  | 0.752  | 0.716  | 0.675  | 0.511  |  0.818  | 5.518 |
+| x.xxx  | x.xxx  | x.xxx  | x.xxx  | x.xxx  |  x.xxx  | x.xxx |
 
 The model is trained for 50 epochs without much efforts in finetuning or hyperparameter searching, therefore it should be a good baseline if you are aiming for performance.
 
