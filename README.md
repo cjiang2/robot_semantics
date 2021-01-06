@@ -9,6 +9,9 @@ This is the official implementation decribed in our paper:
     </figure>        
 </center>
 
+
+**Update (2021-1-6)**: A proper pre-trained model is updated.
+
 **Update (2021-1-3)**: Major codebase updates. This repo should work smoothly now.
 
 **Update (2020-12-19)**: We have uploaded and updated annotations for a complete release of our RS-RGBD dataset! Access the [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Robot-Semantics-Dataset) to check out more. Updated evaluation scores and pre-trained models will be updated in future.
@@ -55,7 +58,7 @@ To repeat the experiments on IIT-V2C Dataset, follow up the instructions in my o
 
 
 ## Demo
-We offer a pretrained model with our attention vision-language model, download it [here]() and put it inside path: `robot_semantics/checkpoints/`:
+We offer a pretrained model with our attention vision-language model, download it [here](https://drive.google.com/file/d/1DLTk5S29tK7tp6hcKyU8GA5rVYVIDap7/view?usp=sharing) and put it inside path: `robot_semantics/checkpoints/`:
 ```
 ├── root_dir
 |   ├── checkpoint
@@ -68,9 +71,9 @@ The metric scores for the offered pretrained model is:
 
 | BLEU-1 | BLEU-2 | BLEU-3 | BLEU-4 | METEOR | ROUGE_L | CIDEr |
 |:------:|:------:|:------:|:------:|:------:|:-------:|:-----:|
-| x.xxx  | x.xxx  | x.xxx  | x.xxx  | x.xxx  |  x.xxx  | x.xxx |
+| 0.756  | 0.693  | 0.653  | 0.605  | 0.485  |  0.777  | 5.056 |
 
-The model is trained for 50 epochs without much efforts in finetuning or hyperparameter searching, therefore it should be a good baseline if you are aiming for performance.
+The model is trained for 50 epochs with hidden units of 512, embedding size of 512. Not much efforts in finetuning or hyperparameter searching is performed, therefore it should be a good baseline if you are aiming for performance.
 
 A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/main/experiments/demo/kg_demo_fast.ipynb) to visualize attentions and the knowledge graph given outputs from the Vision-Language model. File is under `robot_semantics/experiments/demo`.
 
