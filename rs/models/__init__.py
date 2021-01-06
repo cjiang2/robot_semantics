@@ -16,16 +16,17 @@ from rs.models.decoder import *
 class NLLLoss(nn.Module):
     """Calculate Cross-entropy loss per word.
     """
-    def __init__(self, 
-                 ignore_index=0):
+    def __init__(self):
         super(NLLLoss, self).__init__()
-        self.cross_entropy = nn.NLLLoss(reduction='sum', 
-                                        ignore_index=ignore_index)
+        self.cross_entropy = nn.NLLLoss(reduction='none')
 
     def forward(self, 
                 input, 
-                target):
-        return self.cross_entropy(input, target)
+                target,
+                mask):
+        loss = self.cross_entropy(input, target)
+        loss_m = loss * mask
+        return loss_m.sum()
 
 class Video2Lang():
     """Train/Eval inference class for V2L model.
@@ -56,8 +57,9 @@ class Video2Lang():
         # Setup parameters and optimizer
         self.params = list(self.video_encoder.parameters()) + \
                       list(self.lang_decoder.parameters())
-        self.optimizer = torch.optim.Adam(self.params, 
-                                          lr=self.config.LEARNING_RATE)
+        self.optimizer = torch.optim.AdamW(self.params, 
+                                           lr=self.config.LEARNING_RATE,
+                                           weight_decay=self.config.WEIGHT_DECAY)
 
         # Online mode, initialize CNN feature extractor here as well
         if self.config.LOAD_CNN:
@@ -99,7 +101,7 @@ class Video2Lang():
                 probs, states = self.lang_decoder(Xs, states, Xv)
                 
                 # Calculate loss per word
-                loss += self.criterion(probs, S[:,timestep+1])
+                loss += self.criterion(probs, S[:,timestep+1], S_mask[:,timestep+1])
 
                 # Teacher-Forcing for command decoder
                 Xs = S[:,timestep+1]
@@ -107,9 +109,9 @@ class Video2Lang():
             loss = loss / S_mask.sum()     # Average loss per word
             # Gradient backward
             loss.backward()
-            if self.config.CLIP_NORM:
-                nn.utils.clip_grad_norm_(self.video_encoder.parameters(), self.config.CLIP_NORM)
-                nn.utils.clip_grad_norm_(self.lang_decoder.parameters(), self.config.CLIP_NORM)
+            if self.config.CLIP_VALUE:
+                nn.utils.clip_grad_value_(self.video_encoder.parameters(), self.config.CLIP_VALUE)
+                nn.utils.clip_grad_value_(self.lang_decoder.parameters(), self.config.CLIP_VALUE)
             self.optimizer.step()
             return loss
 

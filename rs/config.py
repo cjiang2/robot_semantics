@@ -56,13 +56,16 @@ class Config(object):
     LR_DECAY_EVERY = [5, 40]
 
     # Whether to clip gradient or not
-    CLIP_NORM = 5   # None
+    CLIP_VALUE = 5.0   # None
+
+    # Weight decay
+    WEIGHT_DECAY = 1e-4
 
     # Unit size for LSTM, Dense
-    UNITS = 512
+    UNITS = 256
 
     # Word embedding size, default to 300 matching word2vec
-    EMBED_DIM = 512
+    EMBED_DIM = 256
 
     # Backbone & num_features used for feature extraction
     BACKBONE = 'resnet50'
@@ -87,7 +90,9 @@ class Config(object):
              'eval_wam_grasp_pour',
              'human_point_and_intend',
              'wam_point_and_intend',
-             'eval_wam_grasp_pour_complex']
+             'eval_wam_grasp_pour_complex',
+             'human_grasp_pour_scene2',
+             'eval_human_grasp_pour_scene2']
 
     # Semantic annotation to use for learning
     ANNOT_TO_USE = 'command'

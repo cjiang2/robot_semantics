@@ -55,7 +55,7 @@ class LangDecoder(nn.Module):
         if bias_vector is not None:
             self.logits.bias.data = torch.from_numpy(bias_vector).float()
 
-        nn.init.uniform_(self.embed.weight, -0.05, 0.05)
+        nn.init.uniform_(self.embed.weight, -0.1, 0.1)
 
 if __name__ == '__main__':
     # ----------

@@ -65,7 +65,7 @@ class VideoEncoder(nn.Module):
         self.in_size = in_size
         self.hidden_size = hidden_size
 
-        self.proj = nn.Conv2d(in_size, hidden_size, (1, 1))
+        self.proj = nn.Conv2d(in_size, hidden_size, 1)
         self.attention = BahdanauAttention(hidden_size, hidden_size, hidden_size)
         self.lstm_cell = nn.LSTMCell(hidden_size, hidden_size)
 
@@ -101,7 +101,7 @@ class VideoEncoder(nn.Module):
             hi, ci = self.init_hidden(xv)
 
         # Use 1x1 Conv for Projection
-        x = F.relu(self.proj(xv))
+        x = self.proj(xv)
 
         # Attention over spatial resolution
         x, alpha = self.attention(x, hi)
