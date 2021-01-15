@@ -4,56 +4,6 @@ import torch.nn as nn
 from torch.nn import functional as F
 from torch.nn.parameter import Parameter
 
-# ----------------------------------------
-# Additive Attention
-# ----------------------------------------
-
-class BahdanauAttention(nn.Module):
-    """Bahdanau Additive Attention.
-    """
-    def __init__(self,
-                 in_size,
-                 hidden_size,
-                 units,
-                 bias=True,
-                 save_grad=False):
-        super(BahdanauAttention, self).__init__()
-        self.save_grad = save_grad
-        self.W = nn.Linear(in_size, units, bias=False)
-        self.U = nn.Linear(hidden_size, units, bias=False)
-        self.V = nn.Linear(units, 1, bias=False)
-        self.bias = Parameter(torch.Tensor(units)) if bias else None
-        self.reset_parameters()
-
-    def forward(self, 
-                x, 
-                ht):
-        # x: (batch_size, in_size, h, w), h: (batch_size, hidden_units)
-        x_ = x.view(x.size(0), x.size(1), -1)
-        x_ = x_.permute(0, 2, 1)
-        ht = ht.unsqueeze(1)
-
-        query = self.W(x_)
-        keys = self.U(ht)
-
-        # Additive attention gate
-        score = query + keys
-        if self.bias is not None:
-            score += self.bias
-        score = self.V(torch.tanh(score))
-
-        # score shape == (batch_size, h*w, 1)
-        alpha = F.softmax(score.reshape(score.size(0), -1), dim=1)
-        alpha = alpha.reshape(alpha.size(0), 1, x.size(2), x.size(3))
-
-        # context == (batch_size, hidden_units)
-        x_attn = alpha * x
-
-        return x_attn, alpha.squeeze(1)
-
-    def reset_parameters(self):
-        nn.init.zeros_(self.bias.data)
-
 class VideoEncoder(nn.Module):
     """Module to encode pre-extracted features coming from 
     pre-trained CNN.
@@ -66,7 +16,6 @@ class VideoEncoder(nn.Module):
         self.hidden_size = hidden_size
 
         self.proj = nn.Conv2d(in_size, hidden_size, 1)
-        self.attention = BahdanauAttention(hidden_size, hidden_size, hidden_size)
         self.lstm_cell = nn.LSTMCell(hidden_size, hidden_size)
 
         self.reset_parameters()
@@ -84,11 +33,7 @@ class VideoEncoder(nn.Module):
             xv = Xv[:,timestep,:,:,:]
 
             # LSTM encoding
-            hi, ci, alpha = self.step(xv, hi, ci)
-            alphas.append(alpha)
-        
-        # Stack everything
-        alphas = torch.stack(alphas, dim=1)
+            hi, ci = self.step(xv, hi, ci)
 
         return hi, (hi, ci), alphas
 
@@ -103,16 +48,13 @@ class VideoEncoder(nn.Module):
         # Use 1x1 Conv for Projection
         x = self.proj(xv)
 
-        # Attention over spatial resolution
-        x, alpha = self.attention(x, hi)
-
-        # Pool over spatial resolution
-        x = x.sum(dim=(2, 3))
+        # Global average pooling over spatial resolution
+        x = torch.mean(x.view(x.shape[0], x.shape[1], -1), dim=-1)
 
         # Encode context vector using LSTM
         hi, ci = self.lstm_cell(x, (hi, ci))
 
-        return hi, ci, alpha
+        return hi, ci
 
     def init_hidden(self,
                     input):

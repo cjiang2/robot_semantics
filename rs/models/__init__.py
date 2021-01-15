@@ -196,11 +196,11 @@ class Video2Lang():
             y_pred.append(S_pred)
             y_true.append(S_true)
             fnames += clip_names
-            alphas.append(alpha)
+            #alphas.append(alpha)
         y_pred = torch.cat(y_pred, dim=0)
         y_true = torch.cat(y_true, dim=0)
-        alphas = torch.cat(alphas, dim=0)
-        return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames, alphas.cpu().numpy()
+        #alphas = torch.cat(alphas, dim=0)
+        return y_pred.cpu().numpy(), y_true.cpu().numpy(), fnames, None
 
     def save_weights(self, 
                      epoch):

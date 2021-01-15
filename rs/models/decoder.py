@@ -46,8 +46,7 @@ class LangDecoder(nn.Module):
         return x, (hi, ci)
 
     def reset_parameters(self,
-                         bias_vector=None,
-                         embed_matrix=None):
+                         bias_vector=None):
         for i in range(4):
             nn.init.orthogonal_(self.lstm_cell.weight_hh.data[self.units*i:self.units*(i+1)])
         nn.init.zeros_(self.lstm_cell.bias_ih)
