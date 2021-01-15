@@ -9,6 +9,7 @@ This is the official implementation decribed in our paper:
     </figure>        
 </center>
 
+**NOTE: THIS BRANCH IS DISCARDED & KEPT HERE ONLY AS AN OLD MEMORY. PLEASE DO NOT USE THIS BRANCH!**
 
 ## Requirements
 - PyTorch (tested on 1.4)
