@@ -94,9 +94,10 @@ class Video2Lang():
             Xs = S[:,0]     # First word is always START_WORD
 
             # Video encoding
-            Xv, states = self.video_encoder(X)
+            Xv, _ = self.video_encoder(X)
 
             # Init decoder states using Xv
+            states = self.lang_decoder.init_hidden(Xv)
             _, states = self.lang_decoder(None, states, Xv)
 
             # Language Decoding
@@ -170,7 +171,11 @@ class Video2Lang():
                 X = X.unsqueeze(0)
 
             # Video encoding
-            Xv, states, alpha = self.video_encoder(X)
+            Xv, _ = self.video_encoder(X)
+
+            # Init decoder states using Xv
+            states = self.lang_decoder.init_hidden(Xv)
+            _, states = self.lang_decoder(None, states, Xv)
 
             # Semantics Decoding
             for timestep in range(self.config.MAXLEN - 1):

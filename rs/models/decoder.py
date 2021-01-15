@@ -79,6 +79,17 @@ class LangDecoder(nn.Module):
     def reset(self):
         self.initialized = False
 
+    def init_hidden(self, 
+                    input):
+        """Initialize a zero state for LSTM.
+        """
+        state_size = [int(input.shape[0]), self.units]
+        h0 = torch.zeros(state_size, 
+                         device=input.device, dtype=input.dtype)
+        c0 = torch.zeros(state_size, 
+                         device=input.device, dtype=input.dtype)
+        return (h0, c0)
+
 if __name__ == '__main__':
     # ----------
     decoder = LangDecoder(256, 46, 300)
