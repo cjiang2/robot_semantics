@@ -1,5 +1,5 @@
 # Robot_Semantics
-This is the official implementation decribed in our paper: 
+This is the official implementation of ```EDNet``` decribed in our paper: 
 
 "[Understanding Contexts Inside Joint Robot and Human Manipulation Tasks through Vision-Language Model with Ontology Constraints in a Video Streamline](https://arxiv.org/abs/2003.01163)"
 
@@ -68,17 +68,9 @@ We offer pretrained models with our attention vision-language model, refer to th
 |   |   |   ├── v2l_trained.pth
 ```
 
-A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/main/experiments/demo/kg_demo_fast.ipynb) to visualize attentions and the knowledge graph given outputs from the Vision-Language model. File is under `robot_semantics/experiments/demo`.
+A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/main/experiments/demo/kg_demo_fast.ipynb) to visualize knowledge graph given outputs from the Vision-Language model. File is under `robot_semantics/experiments/demo`.
 
-Some demos for visual attentions from our vision-language model:
-
-<p align="center">
-  <img src="images/attn_demo/wam_demo1.gif" width="180">
-  <img src="images/attn_demo/wam_demo2.gif" width="180">
-  <img src="images/attn_demo/human_demo1.gif" width="180">
-  <img src="images/attn_demo/human_demo2.gif" width="180">
-</p>
-
+There are no visual attentions for EDNet.
 
 ## Additional Note
 Please leave me an issue if you find any potential bugs inside the code.
