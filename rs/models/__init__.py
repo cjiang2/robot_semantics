@@ -109,9 +109,9 @@ class Video2Lang():
             loss = loss / S_mask.sum()     # Average loss per word
             # Gradient backward
             loss.backward()
-            if self.config.CLIP_VALUE:
-                nn.utils.clip_grad_value_(self.video_encoder.parameters(), self.config.CLIP_VALUE)
-                nn.utils.clip_grad_value_(self.lang_decoder.parameters(), self.config.CLIP_VALUE)
+            if self.config.CLIP_NORM:
+                nn.utils.clip_grad_norm_(self.video_encoder.parameters(), self.config.CLIP_NORM)
+                nn.utils.clip_grad_norm_(self.lang_decoder.parameters(), self.config.CLIP_NORM)
             self.optimizer.step()
             return loss
 

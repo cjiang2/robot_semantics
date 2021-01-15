@@ -56,7 +56,7 @@ class Config(object):
     LR_DECAY_EVERY = [5, 40]
 
     # Whether to clip gradient or not
-    CLIP_VALUE = 5.0   # None
+    CLIP_NORM = 5.0   # None
 
     # Weight decay
     WEIGHT_DECAY = 1e-4
@@ -86,16 +86,15 @@ class Config(object):
     # Manipulation task divisions to be used
     TASKS = ['human_grasp_pour', 
              'wam_grasp_pour',
-             'eval_human_grasp_pour',
-             'eval_wam_grasp_pour',
              'human_point_and_intend',
              'wam_point_and_intend',
-             'eval_wam_grasp_pour_complex',
-             'human_grasp_pour_scene2',
-             'eval_human_grasp_pour_scene2']
+             'eval_human_grasp_pour',
+             'eval_wam_grasp_pour',
+             'eval_wam_grasp_pour_complex']
 
     # Semantic annotation to use for learning
     ANNOT_TO_USE = 'command'
+    USE_V1_COMMAND = True
 
     # Parameters for video streamline configuration
     # Size for video observation window

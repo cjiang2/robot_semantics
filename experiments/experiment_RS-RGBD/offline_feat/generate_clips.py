@@ -40,10 +40,26 @@ def process_label(label,
         label = ' <eot> '.join(label)
         #label = label.replace('_', ' ')
         #print(label)
-    elif config.ANNOT_TO_USE == 'command':
+    elif config.ANNOT_TO_USE == 'command' and not config.USE_V1_COMMAND:
         label = label[0]
         #label = label.replace('wam_robot', 'wam')
         #label = label.replace('_', ' ')
+
+    # To match experimental vocabulary used in my IROS paper
+    elif config.ANNOT_TO_USE == 'command' and config.USE_V1_COMMAND:
+        label = label[0]
+        label = label.replace('move empty', 'empty_move')
+        label = label.split(' ')
+        if 'with' in label:
+            idx = label.index('with')
+            label = label[:idx]
+        if 'water' in label:
+            idx = label.index('water')
+            label[idx] = 'cold_water'
+        if 'milk' in label:
+            idx = label.index('milk')
+            label[idx] = 'cold_milk'
+        label = ' '.join(label)
 
     return label
 
@@ -84,11 +100,13 @@ def generate_clips(features,
                 frame_ranges.append((start_idx, end_idx))     # Keep a list of references for clip indices
 
         # Force retrieve one last clip
-        indices = stream.get_clip(forced_retrieve=True)
-        start_idx, end_idx = indices[0], indices[-1]
-        clip = feat[start_idx:end_idx+1]
-        clips.append(clip)
-        frame_ranges.append((start_idx, end_idx))
+        # In orginal IROS experiment this option is not used
+        if not config.USE_V1_COMMAND:
+            indices = stream.get_clip(forced_retrieve=True)
+            start_idx, end_idx = indices[0], indices[-1]
+            clip = feat[start_idx:end_idx+1]
+            clips.append(clip)
+            frame_ranges.append((start_idx, end_idx))
                 
         # Collect labels into pairs
         annots_video = annotations[video_str]
