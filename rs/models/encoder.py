@@ -65,9 +65,9 @@ class VideoEncoder(nn.Module):
         """Return a initial state for LSTM.
         """
         state_size = [int(input.shape[0]), self.hidden_size]
-        h0 = torch.zeros(state_size, requires_grad=False,
+        h0 = torch.zeros(state_size, 
                          device=input.device, dtype=input.dtype)
-        c0 = torch.zeros(state_size, requires_grad=False,
+        c0 = torch.zeros(state_size, 
                          device=input.device, dtype=input.dtype)
         return (h0, c0)
 
