@@ -94,7 +94,10 @@ class Video2Lang():
             Xs = S[:,0]     # First word is always START_WORD
 
             # Video encoding
-            Xv, states, _ = self.video_encoder(X)
+            Xv, states = self.video_encoder(X)
+
+            # Init decoder states using Xv
+            _, states = self.lang_decoder(None, states, Xv)
 
             # Language Decoding
             for timestep in range(self.config.MAXLEN - 1):
@@ -113,6 +116,7 @@ class Video2Lang():
                 nn.utils.clip_grad_norm_(self.video_encoder.parameters(), self.config.CLIP_NORM)
                 nn.utils.clip_grad_norm_(self.lang_decoder.parameters(), self.config.CLIP_NORM)
             self.optimizer.step()
+            self.lang_decoder.reset()
             return loss
 
         # Training epochs

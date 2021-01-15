@@ -27,15 +27,19 @@ class VideoEncoder(nn.Module):
         # Xv: (batch_size, num_clips, in_size, h, w)
 
         # Encode video feature using LSTM
-        alphas = []
+        H = []
         hi, ci = None, None
         for timestep in range(Xv.shape[1]):
             xv = Xv[:,timestep,:,:,:]
 
             # LSTM encoding
             hi, ci = self.step(xv, hi, ci)
+            H.append(hi)
 
-        return hi, (hi, ci), alphas
+        # Stack everything together
+        H = torch.stack(H, dim=1)
+
+        return H, (hi, ci)
 
     def step(self, 
              xv, 
