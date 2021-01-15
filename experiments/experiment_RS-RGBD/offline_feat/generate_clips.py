@@ -100,13 +100,12 @@ def generate_clips(features,
                 frame_ranges.append((start_idx, end_idx))     # Keep a list of references for clip indices
 
         # Force retrieve one last clip
-        # In orginal IROS experiment this option is not used
-        if not config.USE_V1_COMMAND:
-            indices = stream.get_clip(forced_retrieve=True)
-            start_idx, end_idx = indices[0], indices[-1]
-            clip = feat[start_idx:end_idx+1]
-            clips.append(clip)
-            frame_ranges.append((start_idx, end_idx))
+        # Note that this option is added later than the orginal IROS experiment
+        indices = stream.get_clip(forced_retrieve=True)
+        start_idx, end_idx = indices[0], indices[-1]
+        clip = feat[start_idx:end_idx+1]
+        clips.append(clip)
+        frame_ranges.append((start_idx, end_idx))
                 
         # Collect labels into pairs
         annots_video = annotations[video_str]
