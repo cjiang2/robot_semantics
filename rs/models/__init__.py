@@ -186,6 +186,7 @@ class Video2Lang():
                 # Collect prediction
                 preds = torch.argmax(probs, dim=1)
                 S[:,timestep+1] = preds
+            self.lang_decoder.reset()
 
         return S, alpha
 
