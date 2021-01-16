@@ -9,7 +9,7 @@ This is the official implementation of ```EDNet``` decribed in our paper:
     </figure>        
 </center>
 
-**Update (2021-1-15)**: Create a [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Benchmarks-for-Robot-Semantics-Dataset) to keep track of updated model scores after fixes. Please refer to the scores there to compare against our models in the paper.
+**Update (2021-1-15)**: Create a [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Benchmark-for-Robot-Semantics-Dataset) to keep track of updated model scores after fixes. Please refer to the scores there to compare against our models in the paper.
 
 **Update (2021-1-6)**: A proper pre-trained model is updated.
 
@@ -59,7 +59,7 @@ To repeat the experiments on IIT-V2C Dataset, follow up the instructions in my o
 
 
 ## Demo
-We offer pretrained models with our attention vision-language model, refer to the [benchmark page](https://github.com/zonetrooper32/robot_semantics/wiki/Benchmarks-for-Robot-Semantics-Dataset) and download the one you want. Put the downloaded model inside path: `robot_semantics/checkpoints/`:
+We offer pretrained models with our attention vision-language model, refer to the [benchmark page](https://github.com/zonetrooper32/robot_semantics/wiki/Benchmark-for-Robot-Semantics-Dataset) and download the one you want. Put the downloaded model inside path: `robot_semantics/checkpoints/`:
 ```
 ├── root_dir
 |   ├── checkpoint
