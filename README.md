@@ -9,7 +9,7 @@ This is the official implementation of ```attn-seq2seq-cat``` decribed in our pa
     </figure>        
 </center>
 
-**Update (2021-1-15)**: Create a [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Benchmarks-for-Robot-Semantics-Dataset) to keep track of updated model scores after fixes. Please refer to the scores there to compare against our models in the paper.
+**Update (2021-1-15)**: Create a [wiki page](https://github.com/zonetrooper32/robot_semantics/wiki/Benchmark-for-Robot-Semantics-Dataset) to keep track of updated model scores after fixes. Please refer to the scores there to compare against our models in the paper.
 
 **Update (2021-1-6)**: A proper pre-trained model is updated.
 
