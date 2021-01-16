@@ -98,7 +98,7 @@ class Video2Lang():
 
             # Language Decoding
             for timestep in range(self.config.MAXLEN - 1):
-                probs, states = self.lang_decoder(Xs, states, Xv)
+                probs, states = self.lang_decoder(Xs, states)
                 
                 # Calculate loss per word
                 loss += self.criterion(probs, S[:,timestep+1], S_mask[:,timestep+1])
@@ -172,7 +172,7 @@ class Video2Lang():
             for timestep in range(self.config.MAXLEN - 1):
                 Xs = S[:,timestep]
 
-                probs, states = self.lang_decoder(Xs, states, Xv)
+                probs, states = self.lang_decoder(Xs, states)
                 
                 # Collect prediction
                 preds = torch.argmax(probs, dim=1)
