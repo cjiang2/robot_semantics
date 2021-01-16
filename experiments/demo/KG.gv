@@ -40,8 +40,4 @@ digraph KG {
 	Wam
 	PlasticBottle
 	Wam -> PlasticBottle [label=V2C_HOLD]
-	node [shape=box]
-	PlasticBottle
-	Water
-	PlasticBottle -> Water [label=V2C_WITH]
 }
