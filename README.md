@@ -1,5 +1,5 @@
 # Robot_Semantics
-This is the official implementation of ```attn-seq2seq-cat``` decribed in our paper: 
+This is the official implementation of ```attn-seq2seq``` decribed in our paper: 
 
 "[Understanding Contexts Inside Joint Robot and Human Manipulation Tasks through Vision-Language Model with Ontology Constraints in a Video Streamline](https://arxiv.org/abs/2003.01163)"
 
