@@ -19,10 +19,9 @@ class LangDecoder(nn.Module):
         super(LangDecoder, self).__init__()
         self.units = units
         self.embed_dim = embed_dim
-        self.initialized = False
 
         self.embed = nn.Embedding(vocab_size, embed_dim)
-        self.lstm_cell = nn.LSTMCell(embed_dim + units, units)
+        self.lstm_cell = nn.LSTMCell(embed_dim, units)
         self.logits = nn.Linear(units, vocab_size, bias=True)
         self.softmax = nn.LogSoftmax(dim=1)
         
@@ -30,65 +29,29 @@ class LangDecoder(nn.Module):
 
     def forward(self, 
                 Xs, 
-                states, 
-                Xv):
+                states):
         # Phase 2: Decoding Stage
         # Given the previous word token, generate next caption word using lstm2
-
-        # Not initialized, use Xv only:
-        if not self.initialized:
-            for timestep in range(Xv.shape[1]):
-                Xv_step = Xv[:,timestep,:]
-                Xs_shape = [int(Xv_step.shape[0]), self.embed_dim]
-                x = torch.cat((Xv_step, torch.zeros(Xs_shape).to(Xv.device)), dim=-1)
-                hi, ci = self.lstm_cell(x)
-            x = None
-            self.initialized = True
-
-        else:
-            # Sequence processing and generating
-            #print('sentence decoding stage:')
-            #print('Xs:', Xs.shape)
-            Xs = self.embed(Xs)
-            #print('embed:', Xs.shape)
-            #print('Xv:', Xv.shape)
-            x = torch.cat((Xv[:,-1,:], Xs), dim=-1)
-            #print(x.shape)
-            #exit()
-
-            hi, ci = self.lstm_cell(x, states)
-            #print('out:', hi.shape, 'hi:', states[0].shape, 'ci:', states[1].shape)
-
-            x = self.logits(hi)
-            #print('logits:', x.shape)
-            x = self.softmax(x)
-            #print('softmax:', x.shape)
+        # Sequence processing and generating
+        Xs = self.embed(Xs)
+        hi, ci = self.lstm_cell(Xs, states)
+        x = self.logits(hi)
+        x = self.softmax(x)
         return x, (hi, ci)
 
     def reset_parameters(self,
                          bias_vector=None):
-        for i in range(4):
-            nn.init.orthogonal_(self.lstm_cell.weight_hh.data[self.units*i:self.units*(i+1)])
-        nn.init.zeros_(self.lstm_cell.bias_ih)
-        nn.init.zeros_(self.lstm_cell.bias_hh)
+        for n, p in self.named_parameters():
+            if 'weight' in n:
+                if 'hh' in n:
+                    nn.init.orthogonal_(p.data)
+                else:
+                    nn.init.xavier_uniform_(p.data)
+            else:
+                nn.init.zeros_(p.data)
+        nn.init.uniform_(self.embed.weight.data, -0.1, 0.1)
         if bias_vector is not None:
             self.logits.bias.data = torch.from_numpy(bias_vector).float()
-
-        nn.init.uniform_(self.embed.weight, -0.1, 0.1)
-
-    def reset(self):
-        self.initialized = False
-
-    def init_hidden(self, 
-                    input):
-        """Initialize a zero state for LSTM.
-        """
-        state_size = [int(input.shape[0]), self.units]
-        h0 = torch.zeros(state_size, 
-                         device=input.device, dtype=input.dtype)
-        c0 = torch.zeros(state_size, 
-                         device=input.device, dtype=input.dtype)
-        return (h0, c0)
 
 if __name__ == '__main__':
     # ----------

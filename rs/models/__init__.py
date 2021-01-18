@@ -94,15 +94,11 @@ class Video2Lang():
             Xs = S[:,0]     # First word is always START_WORD
 
             # Video encoding
-            Xv, _ = self.video_encoder(X)
-
-            # Init decoder states using Xv
-            states = self.lang_decoder.init_hidden(Xv)
-            _, states = self.lang_decoder(None, states, Xv)
+            _, states = self.video_encoder(X)
 
             # Language Decoding
             for timestep in range(self.config.MAXLEN - 1):
-                probs, states = self.lang_decoder(Xs, states, Xv)
+                probs, states = self.lang_decoder(Xs, states)
                 
                 # Calculate loss per word
                 loss += self.criterion(probs, S[:,timestep+1], S_mask[:,timestep+1])
@@ -117,7 +113,6 @@ class Video2Lang():
                 nn.utils.clip_grad_norm_(self.video_encoder.parameters(), self.config.CLIP_NORM)
                 nn.utils.clip_grad_norm_(self.lang_decoder.parameters(), self.config.CLIP_NORM)
             self.optimizer.step()
-            self.lang_decoder.reset()
             return loss
 
         # Training epochs
@@ -171,22 +166,17 @@ class Video2Lang():
                 X = X.unsqueeze(0)
 
             # Video encoding
-            Xv, _ = self.video_encoder(X)
-
-            # Init decoder states using Xv
-            states = self.lang_decoder.init_hidden(Xv)
-            _, states = self.lang_decoder(None, states, Xv)
+            _, states = self.video_encoder(X)
 
             # Semantics Decoding
             for timestep in range(self.config.MAXLEN - 1):
                 Xs = S[:,timestep]
 
-                probs, states = self.lang_decoder(Xs, states, Xv)
+                probs, states = self.lang_decoder(Xs, states)
                 
                 # Collect prediction
                 preds = torch.argmax(probs, dim=1)
                 S[:,timestep+1] = preds
-            self.lang_decoder.reset()
 
         return S
 
