@@ -1,5 +1,5 @@
 # Robot_Semantics
-This is the official implementation of ```EDNet``` decribed in our paper: 
+This is the official implementation of ```seq2seq``` decribed in our paper: 
 
 "[Understanding Contexts Inside Joint Robot and Human Manipulation Tasks through Vision-Language Model with Ontology Constraints in a Video Streamline](https://arxiv.org/abs/2003.01163)"
 
@@ -70,7 +70,7 @@ We offer pretrained models with our attention vision-language model, refer to th
 
 A [jupyter notebook](https://github.com/zonetrooper32/robot_semantics/blob/main/experiments/demo/kg_demo_fast.ipynb) to visualize knowledge graph given outputs from the Vision-Language model. File is under `robot_semantics/experiments/demo`.
 
-There are no visual attentions for EDNet.
+There are no visual attentions for ```seq2seq```.
 
 ## Additional Note
 Please leave me an issue if you find any potential bugs inside the code.
